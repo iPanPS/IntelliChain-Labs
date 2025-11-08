@@ -43,6 +43,11 @@
             scrollbar-width: none;
         }
 
+        /* Text shadow for better visibility over 3D model */
+        h1, h2, h3, .hero-description, .section-description {
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+        }
+
         #model-canvas {
             position: fixed;
             top: 0;
@@ -92,6 +97,17 @@
             width: 50px;
             height: 50px;
             background: url('LOGO.png') center/contain no-repeat;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logo-3d:hover {
+            animation: logoSpin 2s linear infinite;
+        }
+
+        @keyframes logoSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .nav-menu {
@@ -408,34 +424,224 @@
         }
 
         .scroll-progress {
-            position: fixed;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            display: none;
         }
 
-        .progress-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(56, 189, 248, 0.3);
+        /* Hero Title Animation - per word */
+        .hero-content h1 {
+            opacity: 1;
+        }
+
+        .hero-title-word {
+            display: inline-block;
+            opacity: 0;
+            animation: fadeInScale 1.8s ease-out forwards;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(1.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Subtitle animation - all at once */
+        .hero-description {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 2s forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Button animation */
+        .cta-button {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 2.5s forwards;
+        }
+
+        /* Section scroll animations */
+        .section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stack-item, .grid-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section.visible .stack-item,
+        .section.visible .grid-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section.visible .stack-item:nth-child(1) { transition-delay: 0.1s; }
+        .section.visible .stack-item:nth-child(2) { transition-delay: 0.2s; }
+        .section.visible .stack-item:nth-child(3) { transition-delay: 0.3s; }
+        .section.visible .stack-item:nth-child(4) { transition-delay: 0.4s; }
+
+        .section.visible .grid-item:nth-child(1) { transition-delay: 0.1s; }
+        .section.visible .grid-item:nth-child(2) { transition-delay: 0.2s; }
+        .section.visible .grid-item:nth-child(3) { transition-delay: 0.3s; }
+        .section.visible .grid-item:nth-child(4) { transition-delay: 0.4s; }
+        .section.visible .grid-item:nth-child(5) { transition-delay: 0.5s; }
+        .section.visible .grid-item:nth-child(6) { transition-delay: 0.6s; }
+
+        .section-header {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section.visible .section-header {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Data layout animation */
+        .data-sidebar, .data-content {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .data-content {
+            transform: translateX(30px);
+        }
+
+        .section.visible .data-sidebar,
+        .section.visible .data-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .section.visible .data-sidebar { transition-delay: 0.2s; }
+        .section.visible .data-content { transition-delay: 0.4s; }
+
+        /* Footer animation */
+        footer {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        footer.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        footer {
+            background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+            color: white;
+            padding: 60px 80px 30px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-about h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #bae6fd;
+        }
+
+        .footer-about p {
+            color: #e0f2fe;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-links h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #bae6fd;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #e0f2fe;
+            text-decoration: none;
             transition: all 0.3s;
-            cursor: pointer;
         }
 
-        .progress-dot.active {
-            background: #0ea5e9;
-            transform: scale(1.5);
+        .footer-links a:hover {
+            color: #38bdf8;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(186, 230, 253, 0.2);
+            padding-top: 30px;
+            text-align: center;
+            color: #bae6fd;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(56, 189, 248, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bae6fd;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #38bdf8;
+            color: white;
+            transform: translateY(-3px);
         }
 
         @media (max-width: 1024px) {
             .hero {
                 flex-direction: column;
                 text-align: center;
+                padding: 120px 40px 80px;
             }
 
             .hero-3d {
@@ -455,6 +661,15 @@
                 flex: 1;
                 width: 100%;
             }
+
+            .section {
+                padding: 60px 40px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -469,6 +684,40 @@
 
             .section {
                 padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .stack-item, .grid-item, .data-content {
+                padding: 30px 20px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            footer {
+                padding: 40px 20px 20px;
+            }
+
+            .scroll-progress {
+                right: 20px;
+            }
+
+            /* Mobile 3D model positioning */
+            #model-canvas {
+                opacity: 0.5;
             }
         }
     </style>
@@ -488,29 +737,21 @@
             <li><a href="#examples">Examples</a></li>
         </ul>
         <div class="nav-buttons">
-            <button class="login-btn">Login</button>
-            <button class="sign-in">Get Started</button>
+            <button class="login-btn" onclick="window.location.href='#login'">Login</button>
+            <button class="sign-in" onclick="window.location.href='#signup'">Get Started</button>
         </div>
     </nav>
-
-    <div class="scroll-progress" id="scrollProgress">
-        <div class="progress-dot active" data-section="0"></div>
-        <div class="progress-dot" data-section="1"></div>
-        <div class="progress-dot" data-section="2"></div>
-        <div class="progress-dot" data-section="3"></div>
-        <div class="progress-dot" data-section="4"></div>
-    </div>
 
     <div class="content">
         <!-- Hero Section -->
         <section class="hero" id="home">
             <div class="hero-content">
-                <h1>How AI Can Help Humans Solve Problems</h1>
+                <h1 id="hero-title"></h1>
                 <p class="hero-description">
                     Discover how artificial intelligence transforms complex challenges into actionable solutions, 
                     empowering humans to make better decisions and solve problems faster than ever before.
                 </p>
-                <button class="cta-button">Explore AI Solutions</button>
+                <button class="cta-button" onclick="window.location.href='#applications'">Explore AI Solutions</button>
             </div>
             <div class="hero-3d" id="hero-3d"></div>
         </section>
@@ -637,10 +878,56 @@
                 <p class="section-description" style="margin-bottom: 40px;">
                     Join thousands of professionals leveraging AI to tackle their biggest challenges
                 </p>
-                <button class="cta-button">Start Your AI Journey</button>
+                <button class="cta-button" onclick="window.location.href='#signup'">Start Your AI Journey</button>
             </div>
         </section>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>AI Solutions</h3>
+                <p>Empowering humans to solve complex problems with artificial intelligence. Join us in shaping the future of problem-solving.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">📘</a>
+                    <a href="#" aria-label="Twitter">🐦</a>
+                    <a href="#" aria-label="LinkedIn">💼</a>
+                    <a href="#" aria-label="Instagram">📷</a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Solutions</h4>
+                <ul>
+                    <li><a href="#healthcare">Healthcare AI</a></li>
+                    <li><a href="#climate">Climate Solutions</a></li>
+                    <li><a href="#education">Education Tech</a></li>
+                    <li><a href="#business">Business Intelligence</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#careers">Careers</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#docs">Documentation</a></li>
+                    <li><a href="#api">API Reference</a></li>
+                    <li><a href="#support">Support Center</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 AI Solutions. All rights reserved. Built with ❤️ for problem solvers.</p>
+        </div>
+    </footer>
 
     <script>
         // Three.js Setup
@@ -669,20 +956,38 @@
         // Model variables
         let model3D = null;
         let currentSectionIndex = 0;
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        // ============================================
+        // ROTATION CONTROL - ADJUST THESE VALUES TO ROTATE THE 3D MODEL
+        // Values are in radians: 0 = 0°, Math.PI/2 = 90°, Math.PI = 180°, Math.PI * 2 = 360°
+        // ============================================
+        const MODEL_BASE_ROTATION = {
+            x: 0,           // Tilt forward/backward (positive = tilt forward)
+            y: Math.PI / 3,           // Turn left/right (positive = turn right)
+            z: 0.3            // Roll clockwise/counterclockwise (positive = roll right)
+        };
         
         // Different positions for each section - more dynamic movement
         const modelPositions = [
-            { x: 8, y: 0, z: 0 },       // Hero - right side
-            { x: -8, y: 3, z: 2 },      // Applications - left side, high
-            { x: 9, y: -2, z: -1 },     // Benefits - right side, low
-            { x: -7, y: 2, z: 1 },      // Examples - left side, mid
-            { x: 0, y: 0, z: 3 }        // Final - center, closer
+            { x: 8, y: -1, z: 5 },       // Hero - right side
+            { x: -8, y: 3, z: 5 },      // Applications - left side, high
+            { x: 9, y: -2, z: 5 },     // Benefits - right side, low
+            { x: -7, y: 2, z: 5 },      // Examples - left side, mid
+            { x: 0, y: 0, z: 5 }        // Final - center, closer
         ];
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
 
         // Load GLB model
         const loader = new THREE.GLTFLoader();
         loader.load(
-            'model.glb',
+            '/model.glb',
             (gltf) => {
                 console.log('Model loaded successfully!');
                 model3D = gltf.scene;
@@ -702,17 +1007,37 @@
                 model3D.position.x = 8;
                 model3D.position.y = 0;
                 
-                // Rotate to face directly front (looking at viewer)
-                model3D.rotation.set(0, Math.PI, 0); // Face front
+                // Set base rotation - use the control values above
+                model3D.rotation.set(
+                    MODEL_BASE_ROTATION.x, 
+                    MODEL_BASE_ROTATION.y, 
+                    MODEL_BASE_ROTATION.z
+                );
                 
-                // Keep original materials
+                // Keep original materials but make them lighter
                 model3D.traverse((child) => {
                     if (child.isMesh && child.material) {
                         child.material.needsUpdate = true;
+                        // Make material lighter/brighter
+                        if (child.material.color) {
+                            child.material.color.setHex(0x7dd3fc); // Lighter blue
+                        }
+                        child.material.emissive = new THREE.Color(0x93c5fd);
+                        child.material.emissiveIntensity = 0.3;
                         child.castShadow = true;
                         child.receiveShadow = true;
                     }
                 });
+                
+                // Adjust scale - same size for mobile and desktop
+                const scaleMultiplier = 1; // Same size for all devices
+                model3D.scale.set(scale * scaleMultiplier, scale * scaleMultiplier, scale * scaleMultiplier);
+                
+                // Position on mobile - keep it visible but not intrusive
+                const isMobile = window.innerWidth < 768;
+                if (isMobile) {
+                    model3D.position.set(0, 0, 0);
+                }
                 
                 scene.add(model3D);
             },
@@ -722,16 +1047,37 @@
             }
         );
 
-        // Animation loop - NO automatic rotation, but smooth position transitions
+        // Animation loop - with cursor following
         function animate() {
             requestAnimationFrame(animate);
             
-            // Smoothly move model to target position for current section
             if (model3D) {
-                const targetPos = modelPositions[currentSectionIndex];
-                model3D.position.x += (targetPos.x - model3D.position.x) * 0.05;
-                model3D.position.y += (targetPos.y - model3D.position.y) * 0.05;
-                model3D.position.z += (targetPos.z - model3D.position.z) * 0.05;
+                const isMobile = window.innerWidth < 768;
+                
+                // Smoothly move model to target position for current section
+                if (!isMobile) {
+                    const targetPos = modelPositions[currentSectionIndex];
+                    model3D.position.x += (targetPos.x - model3D.position.x) * 0.05;
+                    model3D.position.y += (targetPos.y - model3D.position.y) * 0.05;
+                    model3D.position.z += (targetPos.z - model3D.position.z) * 0.05;
+                    
+                    // Subtle rotation following cursor - add to base rotation
+                    const targetRotationY = MODEL_BASE_ROTATION.y + (mouseX * 0.2);
+                    const targetRotationX = MODEL_BASE_ROTATION.x + (mouseY * 0.1);
+                    
+                    model3D.rotation.y += (targetRotationY - model3D.rotation.y) * 0.05;
+                    model3D.rotation.x += (targetRotationX - model3D.rotation.x) * 0.05;
+                } else {
+                    // On mobile, keep it centered and static
+                    model3D.position.x += (0 - model3D.position.x) * 0.05;
+                    model3D.position.y += (0 - model3D.position.y) * 0.05;
+                    model3D.position.z += (0 - model3D.position.z) * 0.05;
+                    
+                    // Face forward on mobile - use base rotation
+                    model3D.rotation.x += (MODEL_BASE_ROTATION.x - model3D.rotation.x) * 0.05;
+                    model3D.rotation.y += (MODEL_BASE_ROTATION.y - model3D.rotation.y) * 0.05;
+                    model3D.rotation.z += (MODEL_BASE_ROTATION.z - model3D.rotation.z) * 0.05;
+                }
             }
             
             renderer.render(scene, camera);
@@ -739,9 +1085,46 @@
 
         animate();
 
-        // Scroll handling
+        // Hero title animation - per word
+        const heroTitle = "How AI Can Help Humans Solve Problems";
+        const heroTitleElement = document.getElementById('hero-title');
+        const words = heroTitle.split(' ');
+        
+        words.forEach((word, index) => {
+            const span = document.createElement('span');
+            span.className = 'hero-title-word';
+            span.textContent = word;
+            span.style.animationDelay = `${index * 0.5}s`;
+            heroTitleElement.appendChild(span);
+            
+            if (index < words.length - 1) {
+                heroTitleElement.appendChild(document.createTextNode(' '));
+            }
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
         const sections = document.querySelectorAll('.section');
-        const progressDots = document.querySelectorAll('.progress-dot');
+        sections.forEach(section => observer.observe(section));
+
+        // Observe footer
+        const footer = document.querySelector('footer');
+        observer.observe(footer);
+
+        // Scroll handling
         const navbar = document.getElementById('navbar');
 
         function updateScroll() {
@@ -753,7 +1136,7 @@
                 navbar.classList.remove('scrolled');
             }
 
-            // Update progress dots and model position based on section
+            // Update current section for 3D model positioning
             let newSectionIndex = 0;
             sections.forEach((section, index) => {
                 const rect = section.getBoundingClientRect();
@@ -763,25 +1146,10 @@
             });
             
             currentSectionIndex = newSectionIndex;
-
-            progressDots.forEach((dot, index) => {
-                if (index === currentSectionIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
         }
 
         window.addEventListener('scroll', updateScroll);
         window.addEventListener('load', updateScroll);
-
-        // Progress dots navigation
-        progressDots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                sections[index].scrollIntoView({ behavior: 'smooth' });
-            });
-        });
 
         // Data tabs
         const dataTabs = document.querySelectorAll('.data-tab');
@@ -850,6 +1218,17 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            
+            // Keep same scale on resize - no changes between mobile/desktop
+            if (model3D) {
+                const baseScale = 18;
+                const scaleMultiplier = 1; // Same for all devices
+                const box = new THREE.Box3().setFromObject(model3D);
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = (baseScale / maxDim) * scaleMultiplier;
+                model3D.scale.set(scale, scale, scale);
+            }
         });
     </script>
 </body>
