@@ -6,6 +6,7 @@
     <title>IntelliChain Labs</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <link rel="icon" type="image/x-icon" href="LOGO.png">
     <style>
         * {
             margin: 0;
@@ -1152,6 +1153,7 @@
     </style>
 </head>
 <body>
+    
     <canvas id="model-canvas"></canvas>
 
     <nav id="navbar">
@@ -1239,7 +1241,7 @@
             <div class="section-content">
                 <div class="section-header">
                     <div class="section-subtitle">Problem-Solving Applications</div>
-                    <h2 class="section-title">AI-Powered Solutions</h2>
+                    <h2 class="section-title">IntelliChain Labs</h2>
                     <p class="section-description">
                         Artificial intelligence provides innovative approaches to tackle complex problems across various domains
                     </p>
@@ -1677,18 +1679,17 @@
                         child.receiveShadow = true;
                     }
                 });
-                
                 // Adjust scale - larger on mobile for visibility
                 const isMobile = window.innerWidth < 768;
                 const scaleMultiplier = isMobile ? 0.7 : 1; // Larger on mobile (was 0.4)
                 model3D.scale.set(scale * scaleMultiplier, scale * scaleMultiplier, scale * scaleMultiplier);
                 
                 // Position on mobile - keep it visible but not intrusive
-                if (isMobile) {
-                    model3D.position.set(0, -2, 2); // Closer to camera
+                if (!isMobile) {
+                    scene.add(model3D);
                 }
                 
-                scene.add(model3D);
+                
             },
             undefined,
             (error) => {
@@ -1799,20 +1800,20 @@
             const windowHeight = window.innerHeight;
             
             // Calculate progress based on scroll position
-            const sectionTop = rect.top;
-            const sectionHeight = rect.height;
+            const sectionTop = rect.top -20;
+            const sectionHeight = rect.height -20;
             
             // Progress from 0 to 1 as section scrolls through viewport
             let progress = 0;
             if (sectionTop < windowHeight && sectionTop > -sectionHeight) {
                 progress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight * 1.5)));
             } else if (sectionTop <= -sectionHeight) {
-                progress = 2;
+                progress = 1;
             }
             
             // Phase 1: Lines slide in (0 - 0.3)
-            if (progress <= 1) {
-                const lineProgress = progress / 1;
+            if (progress <= 0.3) {
+                const lineProgress = progress / 0.3;
                 lineLeft.style.transform = `translateY(-50%) scaleX(${lineProgress})`;
                 lineRight.style.transform = `translateY(-50%) scaleX(${lineProgress})`;
                 lineLeft.style.opacity = '1';
@@ -1866,7 +1867,7 @@
             }
             
             // Phase 4: Content appears (0.5 onwards) - Always visible after 0.5
-            if (progress > 0.5) {
+            if (progress > 0.4) {
                 const contentProgress = Math.min(1, (progress - 0.5) / 0.2);
                 const scale = 0.9 + (contentProgress * 0.1);
                 ctaContent.style.opacity = contentProgress;
