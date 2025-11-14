@@ -52,7 +52,7 @@
 
         /* Text shadow for better visibility over 3D model */
         h1, h2, h3, .hero-description, .section-description {
-            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+            text-shadow: 0 2px 10px rgba(239, 208, 208, 0.8);
         }
 
         #model-canvas {
@@ -1617,10 +1617,10 @@
         // Different positions for each section - more dynamic movement
         const modelPositions = [
             { x: 8, y: -1, z: 5, rotation: 0 },           // Hero - right side
-            { x: -8, y: 3, z: 5, rotation: Math.PI / 4 }, // Applications - left side, high
+            { x: -8, y: 3, z: 5, rotation: 0}, // Applications - left side, high
             { x: 9, y: -2, z: 5, rotation: Math.PI / 2 }, // Benefits - right side, low
-            { x: -7, y: 2, z: 5, rotation: Math.PI },     // Examples - left side, mid
-            { x: 0, y: 0, z: 5, rotation: Math.PI * 1.5 }, // CTA - center
+            { x: -15, y: -5, z: 6, rotation: Math.PI /1.533 },     // Examples - left side, mid
+            { x: 0, y: 0, z: 6, rotation: Math.PI * 2 }, // CTA - center
             { x: 8, y: -1, z: 5, rotation: Math.PI * 2 }, // Materials - right
             { x: -8, y: 2, z: 5, rotation: Math.PI / 6 }, // Implementation - left
             { x: 9, y: -2, z: 5, rotation: Math.PI / 3 }, // Challenges - right
@@ -1807,12 +1807,12 @@
             if (sectionTop < windowHeight && sectionTop > -sectionHeight) {
                 progress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight * 1.5)));
             } else if (sectionTop <= -sectionHeight) {
-                progress = 1;
+                progress = 2;
             }
             
             // Phase 1: Lines slide in (0 - 0.3)
-            if (progress <= 0.3) {
-                const lineProgress = progress / 0.3;
+            if (progress <= 1) {
+                const lineProgress = progress / 1;
                 lineLeft.style.transform = `translateY(-50%) scaleX(${lineProgress})`;
                 lineRight.style.transform = `translateY(-50%) scaleX(${lineProgress})`;
                 lineLeft.style.opacity = '1';
@@ -1833,7 +1833,7 @@
             }
             
             // Phase 2: Explosion (0.3 - 0.5)
-            if (progress > 0.3 && progress <= 0.5) {
+            if (progress > 1.5 && progress <= 1.8) {
                 const explodeProgress = (progress - 0.3) / 0.2;
                 const scale = explodeProgress * 20;
                 const opacity = Math.max(0, 1 - explodeProgress);
