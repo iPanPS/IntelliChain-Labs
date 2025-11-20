@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>IntelliChain Labs</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -12,6 +12,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
         }
 
         :root {
@@ -25,6 +31,32 @@
             --blue-800: #075985;
             --blue-900: #0c4a6e;
             --cyan-400: #22d3ee;
+
+            /* Theme variables */
+            --bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
+            --bg: #ffffff;
+            --text: #0c4a6e;
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --nav-bg-solid: rgba(255, 255, 255, 0.9);
+            --nav-border: rgba(56, 189, 248, 0.3);
+            --card-bg: rgba(255,255,255,0.6);
+            --muted: rgba(12, 74, 110, 0.7);
+            --accent: #0ea5e9;
+            --text-shadow: 0 2px 10px rgba(239, 208, 208, 0.8);
+        }
+
+        /* Dark theme overrides */
+        .dark {
+            --bg-gradient: linear-gradient(180deg, #071024 0%, #081226 60%, #02111a 100%);
+            --bg: #071124;
+            --text: #cfeffd;
+            --nav-bg: rgba(4, 10, 20, 0.6);
+            --nav-bg-solid: rgba(6, 12, 24, 0.8);
+            --nav-border: rgba(34, 211, 238, 0.08);
+            --card-bg: rgba(255,255,255,0.03);
+            --muted: rgba(207, 239, 253, 0.7);
+            --accent: #22d3ee;
+            --text-shadow: 0 2px 8px rgba(0,0,0,0.6);
         }
         .section {
             min-height: 100vh;
@@ -33,13 +65,19 @@
             justify-content: center;
             padding: 80px;
             position: relative;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
-            color: #0c4a6e;
+            background: var(--bg-gradient);
+            background-color: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
             position: relative;
+            width: 100%;
+            max-width: 100%;
         }
 
         body::-webkit-scrollbar {
@@ -76,20 +114,21 @@
             align-items: center;
             padding: 16px 40px;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--nav-bg);
             backdrop-filter: blur(20px);
             border-radius: 60px;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            box-shadow: 0 8px 32px rgba(14, 165, 233, 0.15);
+            border: 1px solid var(--nav-border);
+            box-shadow: 0 8px 32px rgba(14, 165, 233, 0.08);
             width: calc(100% - 100px);
             max-width: 1200px;
             transition: all 0.3s ease;
+            max-width: calc(100% - 40px);
         }
 
         nav.scrolled {
             backdrop-filter: blur(30px);
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 12px 48px rgba(14, 165, 233, 0.2);
+            background: var(--nav-bg-solid);
+            box-shadow: 0 12px 48px rgba(14, 165, 233, 0.12);
         }
 
         .logo {
@@ -98,7 +137,7 @@
             gap: 12px;
             font-size: 24px;
             font-weight: 700;
-            color: #0c4a6e;
+            color: var(--text);
             flex-shrink: 0;
         }
 
@@ -133,7 +172,7 @@
 
         .nav-menu a {
             text-decoration: none;
-            color: #0369a1;
+            color: var(--text);
             font-size: 15px;
             font-weight: 500;
             transition: all 0.3s;
@@ -143,8 +182,48 @@
         }
 
         .nav-menu a:hover {
-            color: #0ea5e9;
+            color: var(--accent);
             background: rgba(56, 189, 248, 0.1);
+        }
+
+        /* Dark mode toggle button */
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Language toggle button */
+        .lang-toggle {
+            background: none;
+            border: 1px solid var(--accent);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--accent);
+            border-radius: 20px;
+        }
+
+        .lang-toggle:hover {
+            background: var(--accent);
+            color: #ffffff;
+            transform: scale(1.05);
         }
 
         /* Dropdown menu */
@@ -173,17 +252,31 @@
             position: absolute;
             top: 100%;
             left: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 15px;
             padding: 10px 0;
             min-width: 200px;
-            box-shadow: 0 8px 32px rgba(14, 165, 233, 0.2);
+            box-shadow: 0 8px 32px rgba(14, 165, 233, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5);
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .nav-dropdown-menu::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 15px;
+            pointer-events: none;
+            z-index: -1;
         }
 
         .nav-dropdown:hover .nav-dropdown-menu {
@@ -198,14 +291,38 @@
 
         .nav-dropdown-menu a {
             padding: 12px 20px;
-            color: #0369a1;
+            color: var(--text);
             border-radius: 0;
             display: block;
         }
 
         .nav-dropdown-menu a:hover {
             background: rgba(56, 189, 248, 0.15);
-            color: #0ea5e9;
+            color: var(--accent);
+        }
+
+        /* Dark theme dropdown */
+        .dark .nav-dropdown-menu {
+            background: rgba(7, 17, 36, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(34, 211, 238, 0.1);
+        }
+
+        .dark .nav-dropdown-menu::before {
+            background: rgba(7, 17, 36, 0.3);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .dark .nav-dropdown-menu a {
+            color: var(--text);
+        }
+
+        .dark .nav-dropdown-menu a:hover {
+            background: rgba(34, 211, 238, 0.15);
+            color: var(--accent);
         }
 
         /* Mobile menu */
@@ -220,7 +337,7 @@
         .mobile-menu-toggle span {
             width: 25px;
             height: 3px;
-            background: #0369a1;
+            background: var(--text);
             border-radius: 3px;
             transition: all 0.3s;
         }
@@ -243,7 +360,7 @@
             top: 100px;
             left: 20px;
             right: 20px;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--nav-bg);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 20px;
@@ -281,7 +398,7 @@
         .mobile-nav a {
             display: block;
             padding: 12px;
-            color: #0369a1;
+            color: var(--text);
             text-decoration: none;
             border-radius: 10px;
             transition: all 0.3s;
@@ -289,13 +406,13 @@
 
         .mobile-nav a:hover {
             background: rgba(56, 189, 248, 0.15);
-            color: #0ea5e9;
+            color: var(--accent);
         }
 
         .mobile-dropdown-toggle {
             font-weight: 600;
             padding: 12px;
-            color: #0369a1;
+            color: var(--text);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -327,6 +444,8 @@
             display: flex;
             gap: 15px;
             align-items: center;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .login-btn {
@@ -336,13 +455,13 @@
             border-radius: 25px;
             font-size: 14px;
             font-weight: 500;
-            color: #0369a1;
+            color: var(--text);
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .login-btn:hover {
-            color: #0ea5e9;
+            color: var(--accent);
         }
 
         .sign-in {
@@ -366,6 +485,9 @@
         .content {
             position: relative;
             z-index: 10;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         .hero {
@@ -374,8 +496,10 @@
             justify-content: space-between;
             padding: 140px 80px 100px;
             min-height: 100vh;
-            max-width: 1400px;
+            max-width: 100%;
             margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .hero-content {
@@ -392,7 +516,7 @@
         h1 {
             font-size: 72px;
             font-weight: 700;
-            color: #0c4a6e;
+            color: var(--text);
             line-height: 1.1;
             margin-bottom: 30px;
             letter-spacing: -2px;
@@ -401,7 +525,7 @@
         .hero-description {
             font-size: 20px;
             line-height: 1.7;
-            color: #075985;
+            color: var(--muted);
             margin-bottom: 45px;
         }
 
@@ -430,8 +554,12 @@
         }
 
         .section:nth-child(even) {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(224, 242, 254, 0.8) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(224, 242, 254, 0.5) 100%);
             position: relative;
+        }
+
+        .dark .section:nth-child(even) {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.05) 0%, rgba(6, 12, 24, 0.3) 100%);
         }
 
         .section:nth-child(even)::before {
@@ -453,6 +581,10 @@
             color: white;
         }
 
+        .dark #benefits {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+        }
+
         #benefits .section-subtitle,
         #benefits .section-title,
         #benefits .section-description {
@@ -462,6 +594,11 @@
         #benefits .grid-item {
             background: rgba(255, 255, 255, 0.95);
             color: #0c4a6e;
+        }
+
+        .dark #benefits .grid-item {
+            background: rgba(34, 211, 238, 0.1);
+            color: #cfeffd;
         }
 
         #examples {
@@ -481,7 +618,7 @@
 
         .section-subtitle {
             font-size: 16px;
-            color: #0ea5e9;
+            color: var(--accent);
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 20px;
@@ -491,14 +628,14 @@
         .section-title {
             font-size: 48px;
             font-weight: 700;
-            color: #0c4a6e;
+            color: var(--text);
             margin-bottom: 20px;
             letter-spacing: -1px;
         }
 
         .section-description {
             font-size: 18px;
-            color: #075985;
+            color: var(--muted);
             line-height: 1.8;
             max-width: 800px;
             margin: 0 auto;
@@ -512,7 +649,7 @@
         }
 
         .stack-item {
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--card-bg);
             backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 20px;
@@ -525,7 +662,7 @@
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 20px 60px rgba(14, 165, 233, 0.3);
             border-color: rgba(56, 189, 248, 0.5);
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
         }
 
         .stack-item:active {
@@ -535,13 +672,13 @@
 
         .stack-item h3 {
             font-size: 28px;
-            color: #0c4a6e;
+            color: var(--text);
             margin-bottom: 15px;
         }
 
         .stack-item p {
             font-size: 16px;
-            color: #0284c7;
+            color: var(--muted);
             line-height: 1.7;
         }
 
@@ -553,7 +690,7 @@
         }
 
         .grid-item {
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--card-bg);
             backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 20px;
@@ -584,7 +721,7 @@
             transform: translateY(-10px) scale(1.05);
             box-shadow: 0 20px 60px rgba(14, 165, 233, 0.3);
             border-color: rgba(56, 189, 248, 0.5);
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
         }
 
         .grid-item:active {
@@ -604,13 +741,13 @@
 
         .grid-item h3 {
             font-size: 24px;
-            color: #0c4a6e;
+            color: var(--text);
             margin-bottom: 15px;
         }
 
         .grid-item p {
             font-size: 16px;
-            color: #0284c7;
+            color: var(--muted);
             line-height: 1.7;
         }
 
@@ -629,25 +766,25 @@
         }
 
         .data-tab {
-            background: rgba(255, 255, 255, 0.6);
+            background: var(--card-bg);
             padding: 20px;
             border-radius: 15px;
             border: 2px solid transparent;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 600;
-            color: #0369a1;
+            color: var(--text);
         }
 
         .data-tab.active {
             background: rgba(56, 189, 248, 0.2);
             border-color: #38bdf8;
-            color: #0c4a6e;
+            color: var(--text);
         }
 
         .data-content {
             flex: 1;
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--card-bg);
             backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 20px;
@@ -683,7 +820,7 @@
         /* Subtitle animation - all at once */
         .hero-description {
             opacity: 0;
-            animation: fadeInUp 0.6s ease-out 1.4s forwards;
+            animation: fadeInUp 0.6s ease-out 2.0s forwards;
         }
 
         @keyframes fadeInUp {
@@ -864,12 +1001,728 @@
             z-index: 2;
             transform: scale(0.9);
         }
+
+        /* Performance Section Styles */
+        #performance {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(34, 211, 238, 0.15) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .performance-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .performance-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        .chart-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .performance-metric {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            animation: slideInMetric 0.6s ease-out forwards;
+        }
+
+        .performance-metric:nth-child(2) { animation-delay: 0.1s; }
+        .performance-metric:nth-child(3) { animation-delay: 0.2s; }
+        .performance-metric:nth-child(4) { animation-delay: 0.3s; }
+        .performance-metric:nth-child(5) { animation-delay: 0.4s; }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .model-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .model-bar {
+            display: grid;
+            grid-template-columns: 100px 1fr 50px;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .model-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+            text-align: right;
+        }
+
+        .bar-container {
+            position: relative;
+            height: 28px;
+            background: rgba(56, 189, 248, 0.08);
+            border-radius: 14px;
+            overflow: visible;
+            border: 1px solid rgba(56, 189, 248, 0.15);
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 14px;
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+        }
+
+        .bar-fill.intellichain {
+            background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 100%);
+        }
+
+        .bar-fill.chatgpt {
+            background: linear-gradient(90deg, #10a37f 0%, #0d8368 100%);
+        }
+
+        .bar-fill.gemini {
+            background: linear-gradient(90deg, #4285f4 0%, #1f71b8 100%);
+        }
+
+        .bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .bar-value {
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffffff;
+            text-align: center;
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 2px solid #0ea5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 12px rgba(14, 165, 233, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes slideInMetric {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .performance-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .perf-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .perf-card:nth-child(1) { animation-delay: 0.5s; }
+        .perf-card:nth-child(2) { animation-delay: 0.6s; }
+        .perf-card:nth-child(3) { animation-delay: 0.7s; }
+
+        .perf-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .perf-card:hover::before {
+            left: 100%;
+        }
+
+        .perf-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        .perf-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .perf-card-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .perf-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .perf-card-desc {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .perf-card-stat {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .dark .perf-card {
+            background: rgba(34, 211, 238, 0.05);
+            border-color: rgba(34, 211, 238, 0.2);
+        }
+
+        .dark .perf-card:hover {
+            box-shadow: 0 20px 60px rgba(34, 211, 238, 0.15);
+            border-color: rgba(34, 211, 238, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .performance-container {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .model-bar {
+                grid-template-columns: 80px 1fr 50px;
+            }
+
+            .bar-value {
+                font-size: 12px;
+                padding: 3px 7px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .performance-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .performance-chart {
+                gap: 25px;
+            }
+
+            .model-bar {
+                grid-template-columns: 70px 1fr 45px;
+            }
+
+            .model-name {
+                font-size: 12px;
+            }
+
+            .bar-container {
+                height: 24px;
+            }
+
+            .bar-value {
+                font-size: 11px;
+                padding: 3px 6px;
+            }
+
+            .perf-card {
+                padding: 20px;
+            }
+
+            .perf-card-icon {
+                font-size: 28px;
+                margin-bottom: 10px;
+            }
+
+            .perf-card-title {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            .perf-card-desc {
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+
+            .perf-card-stat {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .performance-container {
+                gap: 20px;
+            }
+
+            .performance-chart {
+                gap: 20px;
+            }
+
+            .model-bar {
+                grid-template-columns: 60px 1fr 40px;
+                gap: 8px;
+            }
+
+            .model-name {
+                font-size: 11px;
+                text-align: center;
+            }
+
+            .bar-container {
+                height: 22px;
+            }
+
+            .bar-value {
+                font-size: 10px;
+                padding: 2px 5px;
+            }
+
+            .metric-label {
+                font-size: 12px;
+            }
+
+            .chart-title {
+                font-size: 18px;
+            }
+
+            .perf-card {
+                padding: 18px;
+            }
+
+            .perf-card-icon {
+                font-size: 24px;
+            }
+
+            .perf-card-title {
+                font-size: 15px;
+            }
+
+            .perf-card-desc {
+                font-size: 12px;
+            }
+        }
+
+        /* Testimonials Section Styles */
+        #testimonials {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.1) 0%, rgba(14, 165, 233, 0.15) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .testimonials-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .testimonial-card:nth-child(1) { animation-delay: 0.1s; }
+        .testimonial-card:nth-child(2) { animation-delay: 0.2s; }
+        .testimonial-card:nth-child(3) { animation-delay: 0.3s; }
+        .testimonial-card:nth-child(4) { animation-delay: 0.4s; }
+        .testimonial-card:nth-child(5) { animation-delay: 0.5s; }
+        .testimonial-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .testimonial-card:hover::before {
+            left: 100%;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        .testimonial-header {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-avatar {
+            font-size: 48px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.3) 0%, rgba(34, 211, 238, 0.3) 100%);
+            border-radius: 50%;
+            border: 2px solid rgba(56, 189, 248, 0.4);
+        }
+
+        .testimonial-info {
+            flex: 1;
+        }
+
+        .testimonial-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .testimonial-role {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .testimonial-rating {
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--muted);
+            position: relative;
+            z-index: 1;
+            font-style: italic;
+        }
+
+        .dark .testimonial-card {
+            background: rgba(34, 211, 238, 0.05);
+            border-color: rgba(34, 211, 238, 0.2);
+        }
+
+        .dark .testimonial-card:hover {
+            box-shadow: 0 20px 60px rgba(34, 211, 238, 0.15);
+            border-color: rgba(34, 211, 238, 0.5);
+        }
+
+        /* Use Cases Section Styles */
+        #use-cases {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(34, 211, 238, 0.15) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .usecases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .usecase-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .usecase-card:nth-child(1) { animation-delay: 0.1s; }
+        .usecase-card:nth-child(2) { animation-delay: 0.2s; }
+        .usecase-card:nth-child(3) { animation-delay: 0.3s; }
+        .usecase-card:nth-child(4) { animation-delay: 0.4s; }
+        .usecase-card:nth-child(5) { animation-delay: 0.5s; }
+        .usecase-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .usecase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .usecase-card:hover::before {
+            left: 100%;
+        }
+
+        .usecase-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        .usecase-icon {
+            font-size: 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .usecase-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            position: relative;
+            z-index: 1;
+        }
+
+        .usecase-subtitle {
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .usecase-benefits {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .usecase-benefits li {
+            font-size: 14px;
+            color: var(--muted);
+            padding: 10px 0;
+            padding-left: 24px;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+            position: relative;
+        }
+
+        .usecase-benefits li:last-child {
+            border-bottom: none;
+        }
+
+        .usecase-benefits li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .usecase-metric {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(34, 211, 238, 0.1) 100%);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .dark .usecase-card {
+            background: rgba(34, 211, 238, 0.05);
+            border-color: rgba(34, 211, 238, 0.2);
+        }
+
+        .dark .usecase-card:hover {
+            box-shadow: 0 20px 60px rgba(34, 211, 238, 0.15);
+            border-color: rgba(34, 211, 238, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .testimonials-container {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 24px;
+            }
+
+            .usecases-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 24px;
+            }
+
+            .usecase-card {
+                padding: 28px;
+            }
+
+            .usecase-icon {
+                font-size: 40px;
+            }
+
+            .usecase-title {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .testimonials-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .usecases-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .testimonial-card {
+                padding: 24px;
+            }
+
+            .testimonial-avatar {
+                width: 50px;
+                height: 50px;
+                font-size: 40px;
+            }
+
+            .testimonial-name {
+                font-size: 15px;
+            }
+
+            .testimonial-role {
+                font-size: 12px;
+            }
+
+            .testimonial-text {
+                font-size: 13px;
+            }
+
+            .usecase-card {
+                padding: 24px;
+            }
+
+            .usecase-icon {
+                font-size: 36px;
+            }
+
+            .usecase-title {
+                font-size: 18px;
+            }
+
+            .usecase-subtitle {
+                font-size: 13px;
+            }
+
+            .metric-value {
+                font-size: 24px;
+            }
+        }
+
+
         footer {
             background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
             color: white;
             padding: 60px 80px 30px;
             position: relative;
             z-index: 20;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        .dark footer {
+            background: linear-gradient(135deg, #0a1f2e 0%, #051a2b 100%);
         }
 
         .footer-content {
@@ -887,16 +1740,28 @@
             color: #bae6fd;
         }
 
+        .dark .footer-about h3 {
+            color: #22d3ee;
+        }
+
         .footer-about p {
             color: #e0f2fe;
             line-height: 1.7;
             margin-bottom: 20px;
         }
 
+        .dark .footer-about p {
+            color: #a5f3fc;
+        }
+
         .footer-links h4 {
             font-size: 18px;
             margin-bottom: 20px;
             color: #bae6fd;
+        }
+
+        .dark .footer-links h4 {
+            color: #22d3ee;
         }
 
         .footer-links ul {
@@ -914,9 +1779,17 @@
             transition: all 0.3s;
         }
 
+        .dark .footer-links a {
+            color: #a5f3fc;
+        }
+
         .footer-links a:hover {
             color: #38bdf8;
             padding-left: 5px;
+        }
+
+        .dark .footer-links a:hover {
+            color: #22d3ee;
         }
 
         .footer-bottom {
@@ -924,6 +1797,11 @@
             padding-top: 30px;
             text-align: center;
             color: #bae6fd;
+        }
+
+        .dark .footer-bottom {
+            border-top: 1px solid rgba(34, 211, 238, 0.2);
+            color: #22d3ee;
         }
 
         .social-links {
@@ -1012,8 +1890,22 @@
         @media (max-width: 768px) {
             nav {
                 width: calc(100% - 40px);
-                padding: 12px 20px;
+                padding: 10px 12px;
                 max-width: none;
+                top: 15px;
+                border-radius: 45px;
+                gap: 8px;
+            }
+
+            .logo {
+                font-size: 16px;
+                gap: 8px;
+                min-width: 0;
+            }
+
+            .logo-3d {
+                width: 38px;
+                height: 38px;
             }
 
             .nav-menu {
@@ -1022,66 +1914,50 @@
 
             .mobile-menu-toggle {
                 display: flex;
+                flex-shrink: 0;
             }
 
             .nav-buttons {
-                gap: 10px;
+                gap: 6px;
+                flex-shrink: 1;
+                min-width: 0;
             }
 
             .login-btn {
                 display: none;
             }
 
+            .theme-toggle {
+                font-size: 16px;
+                padding: 6px 8px;
+                flex-shrink: 0;
+            }
+
+            .lang-toggle {
+                font-size: 10px;
+                padding: 4px 8px;
+                flex-shrink: 0;
+            }
+
+            .sign-in {
+                padding: 8px 16px;
+                font-size: 12px;
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
+
             .section {
-                padding: 40px 20px;
+                padding: 50px 20px;
+                min-height: auto;
+            }
+
+            .section:nth-child(even) {
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(224, 242, 254, 0.3) 100%);
             }
 
             h1 {
                 font-size: 32px;
-            }
-
-            .section-title {
-                font-size: 28px;
-            }
-
-            .section-description {
-                font-size: 16px;
-            }
-
-            .grid-layout {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .stack-item, .grid-item, .data-content {
-                padding: 25px 20px;
-            }
-
-            .stack-item h3, .grid-item h3 {
-                font-size: 20px;
-            }
-
-            .stack-item p, .grid-item p {
-                font-size: 14px;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            footer {
-                padding: 40px 20px 20px;
-            }
-
-            .cta-button {
-                padding: 14px 35px;
-                font-size: 14px;
-            }
-
-            /* Mobile 3D model */
-            #model-canvas {
-                opacity: 0.6;
+                line-height: 1.2;
             }
 
             .hero-content {
@@ -1094,6 +1970,7 @@
                 font-size: 16px;
                 position: relative;
                 z-index: 10;
+                line-height: 1.6;
             }
 
             .hero h1 {
@@ -1101,55 +1978,314 @@
                 z-index: 10;
             }
 
+            .hero {
+                padding: 100px 20px 60px;
+                min-height: 80vh;
+            }
+
+            .section-title {
+                font-size: 28px;
+                line-height: 1.2;
+            }
+
+            .section-subtitle {
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+
+            .section-description {
+                font-size: 16px;
+                line-height: 1.6;
+            }
+
+            .grid-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .stack-layout {
+                gap: 20px;
+            }
+
+            .stack-item, .grid-item, .data-content {
+                padding: 25px 20px;
+                border-radius: 16px;
+            }
+
+            .stack-item h3, .grid-item h3 {
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+
+            .stack-item p, .grid-item p {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+            .grid-icon {
+                font-size: 40px;
+                margin-bottom: 15px;
+            }
+
+            .data-layout {
+                flex-direction: column;
+                gap: 20px;
+            }
+
             .data-sidebar {
+                flex-direction: row;
+                width: 100%;
                 gap: 10px;
+                overflow-x: auto;
+                flex: none;
             }
 
             .data-tab {
                 font-size: 14px;
                 padding: 12px 16px;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .data-content {
+                flex: 1;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            footer {
+                padding: 40px 20px 20px;
+            }
+
+            .footer-about h3,
+            .footer-links h4 {
+                font-size: 18px;
+            }
+
+            .cta-button {
+                padding: 14px 35px;
+                font-size: 14px;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            /* Mobile 3D model */
+            #model-canvas {
+                opacity: 0.5;
+            }
+
+            .mobile-nav {
+                top: 65px;
+                left: 10px;
+                right: 10px;
+            }
+
+            .mobile-nav ul li {
+                padding: 8px 0;
+            }
+
+            .mobile-nav a {
+                padding: 10px 12px;
+                font-size: 15px;
+            }
+
+            .hero-title-word {
+                display: inline-block;
             }
         }
 
         @media (max-width: 480px) {
             nav {
-                padding: 10px 15px;
+                padding: 8px 10px;
+                top: 10px;
+                width: calc(100% - 20px);
+                border-radius: 40px;
+                gap: 6px;
             }
 
             .logo {
-                font-size: 18px;
+                font-size: 14px;
+                gap: 6px;
+                min-width: 0;
             }
 
             .logo-3d {
-                width: 40px;
-                height: 40px;
+                width: 32px;
+                height: 32px;
             }
 
-            h1 {
-                font-size: 28px;
+            .mobile-menu-toggle {
+                flex-shrink: 0;
             }
 
-            .section-title {
-                font-size: 24px;
+            .mobile-menu-toggle span {
+                width: 20px;
+                height: 2px;
             }
 
-            .section {
-                padding: 30px 15px;
+            .theme-toggle {
+                font-size: 14px;
+                padding: 4px 6px;
+                flex-shrink: 0;
             }
 
-            .stack-item, .grid-item {
-                padding: 20px 15px;
-            }
-
-            .grid-icon {
-                font-size: 36px;
+            .lang-toggle {
+                font-size: 9px;
+                padding: 3px 6px;
+                flex-shrink: 0;
             }
 
             .sign-in {
-                padding: 8px 20px;
+                padding: 6px 14px;
+                font-size: 11px;
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
+
+            .nav-buttons {
+                gap: 4px;
+                min-width: 0;
+            }
+
+            h1 {
+                font-size: 24px;
+                line-height: 1.1;
+                letter-spacing: -0.5px;
+            }
+
+            .section-title {
+                font-size: 22px;
+                line-height: 1.2;
+            }
+
+            .section-subtitle {
+                font-size: 12px;
+            }
+
+            .section-description {
+                font-size: 14px;
+            }
+
+            .section {
+                padding: 25px 12px;
+                min-height: auto;
+            }
+
+            .hero {
+                padding: 80px 12px 50px;
+                min-height: 70vh;
+            }
+
+            .section-content {
+                width: 100%;
+            }
+
+            .stack-item, .grid-item {
+                padding: 18px 12px;
+                border-radius: 12px;
+            }
+
+            .stack-item h3, .grid-item h3 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .stack-item p, .grid-item p {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+            .grid-icon {
+                font-size: 32px;
+                margin-bottom: 12px;
+            }
+
+            .data-tab {
+                font-size: 13px;
+                padding: 10px 14px;
+            }
+
+            .data-content {
+                padding: 20px 15px;
                 font-size: 13px;
             }
+
+            .data-content h3 {
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+
+            .data-content ul li {
+                padding: 10px 0;
+                font-size: 13px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .footer-about h3,
+            .footer-links h4 {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+
+            .footer-about p,
+            .footer-links a {
+                font-size: 13px;
+            }
+
+            footer {
+                padding: 30px 12px 15px;
+            }
+
+            .footer-bottom {
+                padding-top: 20px;
+                font-size: 12px;
+            }
+
+            .cta-button {
+                padding: 12px 24px;
+                font-size: 13px;
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .collision-animation {
+                min-height: 300px;
+            }
+
+            .line {
+                height: 3px;
+                width: 40%;
+            }
+
+            .particle {
+                width: 8px;
+                height: 8px;
+            }
+
+            .mobile-nav {
+                top: 60px;
+                left: 8px;
+                right: 8px;
+                padding: 15px;
+            }
+
+            .mobile-nav a {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+
+            .section-header {
+                margin-bottom: 40px;
+            }
         }
+    </style>
     </style>
 </head>
 <body>
@@ -1162,26 +2298,26 @@
             <span>IntelliChain Labs</span>
         </div>
         <ul class="nav-menu">
-            <li><a href="#home">Home</a></li>
+            <li><a href="#home" data-i18n="home">Home</a></li>
             <li class="nav-dropdown">
                 <div class="nav-dropdown-toggle">
-                    <a href="#applications">Solutions</a>
+                    <a href="#applications" data-i18n="solutions">Solutions</a>
                 </div>
                 <ul class="nav-dropdown-menu">
-                    <li><a href="#applications">Applications</a></li>
-                    <li><a href="#benefits">Benefits</a></li>
-                    <li><a href="#examples">Examples</a></li>
+                    <li><a href="#applications" data-i18n="applications">Applications</a></li>
+                    <li><a href="#benefits" data-i18n="benefits">Benefits</a></li>
+                    <li><a href="#examples" data-i18n="examples">Examples</a></li>
                 </ul>
             </li>
             <li class="nav-dropdown">
                 <div class="nav-dropdown-toggle">
-                    <a href="#materials">Resources</a>
+                    <a href="#materials" data-i18n="resources">Resources</a>
                 </div>
                 <ul class="nav-dropdown-menu">
-                    <li><a href="#materials">Materials</a></li>
-                    <li><a href="#implementation">Implementation</a></li>
-                    <li><a href="#challenges">Challenges</a></li>
-                    <li><a href="#future">Future Trends</a></li>
+                    <li><a href="#materials" data-i18n="materials">Materials</a></li>
+                    <li><a href="#implementation" data-i18n="implementation">Implementation</a></li>
+                    <li><a href="#challenges" data-i18n="challenges">Challenges</a></li>
+                    <li><a href="#future" data-i18n="future">Future Trends</a></li>
                 </ul>
             </li>
         </ul>
@@ -1191,34 +2327,36 @@
             <span></span>
         </div>
         <div class="nav-buttons">
-            <button class="login-btn" onclick="window.location.href='#login'">Login</button>
-            <button class="sign-in" onclick="window.location.href='#signup'">Get Started</button>
+            <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">🌙</button>
+            <button class="lang-toggle" id="langToggle" title="Toggle language">EN</button>
+            <button class="login-btn" onclick="window.location.href='login.html'" data-i18n="login">Login</button>
+            <button class="sign-in" onclick="window.location.href='signup.html'" data-i18n="get-started">Get Started</button>
         </div>
     </nav>
 
     <!-- Mobile Navigation -->
     <div class="mobile-nav" id="mobileNav">
         <ul>
-            <li><a href="#home">Home</a></li>
+            <li><a href="#home" data-i18n="home">Home</a></li>
             <li>
-                <div class="mobile-dropdown-toggle" data-target="solutions">Solutions</div>
+                <div class="mobile-dropdown-toggle" data-target="solutions" data-i18n="solutions">Solutions</div>
                 <ul class="mobile-submenu" id="solutions">
-                    <li><a href="#applications">Applications</a></li>
-                    <li><a href="#benefits">Benefits</a></li>
-                    <li><a href="#examples">Examples</a></li>
+                    <li><a href="#applications" data-i18n="applications">Applications</a></li>
+                    <li><a href="#benefits" data-i18n="benefits">Benefits</a></li>
+                    <li><a href="#examples" data-i18n="examples">Examples</a></li>
                 </ul>
             </li>
             <li>
-                <div class="mobile-dropdown-toggle" data-target="resources">Resources</div>
+                <div class="mobile-dropdown-toggle" data-target="resources" data-i18n="resources">Resources</div>
                 <ul class="mobile-submenu" id="resources">
-                    <li><a href="#materials">Materials</a></li>
-                    <li><a href="#implementation">Implementation</a></li>
-                    <li><a href="#challenges">Challenges</a></li>
-                    <li><a href="#future">Future Trends</a></li>
+                    <li><a href="#materials" data-i18n="materials">Materials</a></li>
+                    <li><a href="#implementation" data-i18n="implementation">Implementation</a></li>
+                    <li><a href="#challenges" data-i18n="challenges">Challenges</a></li>
+                    <li><a href="#future" data-i18n="future">Future Trends</a></li>
                 </ul>
             </li>
-            <li><a href="#login">Login</a></li>
-            <li><a href="#signup">Get Started</a></li>
+            <li><a href="login.html" data-i18n="login">Login</a></li>
+            <li><a href="#signup" data-i18n="get-started">Get Started</a></li>
         </ul>
     </div>
 
@@ -1228,10 +2366,10 @@
             <div class="hero-content">
                 <h1 id="hero-title"></h1>
                 <p class="hero-description">
-                    Discover how artificial intelligence transforms complex challenges into actionable solutions, 
-                    empowering humans to make better decisions and solve problems faster than ever before.
+                    Temukan bagaimana kecerdasan buatan mengubah tantangan yang kompleks menjadi solusi yang dapat ditindaklanjuti, 
+                    memberdayakan manusia untuk membuat keputusan yang lebih baik dan menyelesaikan masalah lebih cepat dari sebelumnya.
                 </p>
-                <button class="cta-button" onclick="window.location.href='#applications'">Explore IntelliChain Labs</button>
+                <button class="cta-button" onclick="window.location.href='#applications'" data-i18n="explore-btn">Explore IntelliChain Labs</button>
             </div>
             <div class="hero-3d" id="hero-3d"></div>
         </section>
@@ -1240,28 +2378,26 @@
         <section class="section" id="applications">
             <div class="section-content">
                 <div class="section-header">
-                    <div class="section-subtitle">Problem-Solving Applications</div>
-                    <h2 class="section-title">IntelliChain Labs</h2>
-                    <p class="section-description">
-                        Artificial intelligence provides innovative approaches to tackle complex problems across various domains
-                    </p>
+                    <div class="section-subtitle" data-i18n="applications-subtitle">Problem-Solving Applications</div>
+                    <h2 class="section-title" data-i18n="applications-title">IntelliChain Labs</h2>
+                    <p class="section-description" data-i18n="applications-desc">Artificial intelligence provides innovative approaches to tackle complex problems across various domains</p>
                 </div>
                 <div class="stack-layout">
                     <div class="stack-item">
-                        <h3>🔍 Pattern Recognition</h3>
-                        <p>AI identifies hidden patterns in massive datasets that humans might miss, enabling early detection of issues and opportunities in healthcare, finance, and research.</p>
+                        <h3 data-i18n="pattern-title">🔍 Pattern Recognition</h3>
+                        <p data-i18n="pattern-desc">AI identifies hidden patterns in massive datasets that humans might miss, enabling early detection of issues and opportunities in healthcare, finance, and research.</p>
                     </div>
                     <div class="stack-item">
-                        <h3>⚡ Real-Time Decision Making</h3>
-                        <p>Process complex information instantly to provide data-driven recommendations, helping professionals make faster, more accurate decisions in critical situations.</p>
+                        <h3 data-i18n="decision-title">⚡ Real-Time Decision Making</h3>
+                        <p data-i18n="decision-desc">Process complex information instantly to provide data-driven recommendations, helping professionals make faster, more accurate decisions in critical situations.</p>
                     </div>
                     <div class="stack-item">
-                        <h3>🎯 Predictive Analysis</h3>
-                        <p>Forecast future trends and outcomes based on historical data, allowing organizations to proactively address problems before they escalate.</p>
+                        <h3 data-i18n="predictive-title">🎯 Predictive Analysis</h3>
+                        <p data-i18n="predictive-desc">Forecast future trends and outcomes based on historical data, allowing organizations to proactively address problems before they escalate.</p>
                     </div>
                     <div class="stack-item">
-                        <h3>🤖 Automation of Repetitive Tasks</h3>
-                        <p>Free human minds from mundane tasks, allowing them to focus on creative problem-solving and strategic thinking that requires human insight.</p>
+                        <h3 data-i18n="automation-title">🤖 Automation of Repetitive Tasks</h3>
+                        <p data-i18n="automation-desc">Free human minds from mundane tasks, allowing them to focus on creative problem-solving and strategic thinking that requires human insight.</p>
                     </div>
                 </div>
             </div>
@@ -1271,42 +2407,40 @@
         <section class="section" id="benefits">
             <div class="section-content">
                 <div class="section-header">
-                    <div class="section-subtitle">Key Benefits</div>
-                    <h2 class="section-title">Why AI Excels at Problem Solving</h2>
-                    <p class="section-description">
-                        Understanding the unique advantages AI brings to human problem-solving efforts
-                    </p>
+                    <div class="section-subtitle" data-i18n="benefits-subtitle">Key Benefits</div>
+                    <h2 class="section-title" data-i18n="benefits-title">Why AI Excels at Problem Solving</h2>
+                    <p class="section-description" data-i18n="benefits-desc">Understanding the unique advantages AI brings to human problem-solving efforts</p>
                 </div>
                 <div class="grid-layout">
                     <div class="grid-item">
                         <div class="grid-icon">🚀</div>
-                        <h3>Speed</h3>
-                        <p>Analyze millions of data points in seconds, accelerating problem identification and solution development exponentially</p>
+                        <h3 data-i18n="speed-title">Speed</h3>
+                        <p data-i18n="speed-desc">Analyze millions of data points in seconds, accelerating problem identification and solution development exponentially</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🎓</div>
-                        <h3>Learning</h3>
-                        <p>Continuously improve from experience, becoming more effective at solving similar problems over time</p>
+                        <h3 data-i18n="learning-title">Learning</h3>
+                        <p data-i18n="learning-desc">Continuously improve from experience, becoming more effective at solving similar problems over time</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">📊</div>
-                        <h3>Accuracy</h3>
-                        <p>Reduce human error in complex calculations and data analysis, providing more reliable solutions</p>
+                        <h3 data-i18n="accuracy-title">Accuracy</h3>
+                        <p data-i18n="accuracy-desc">Reduce human error in complex calculations and data analysis, providing more reliable solutions</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🔄</div>
-                        <h3>Scalability</h3>
-                        <p>Handle increasing volumes of problems simultaneously without degradation in performance</p>
+                        <h3 data-i18n="scalability-title">Scalability</h3>
+                        <p data-i18n="scalability-desc">Handle increasing volumes of problems simultaneously without degradation in performance</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">💡</div>
-                        <h3>Innovation</h3>
-                        <p>Discover novel solutions by exploring possibilities beyond traditional human thinking patterns</p>
+                        <h3 data-i18n="innovation-title">Innovation</h3>
+                        <p data-i18n="innovation-desc">Discover novel solutions by exploring possibilities beyond traditional human thinking patterns</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🌐</div>
-                        <h3>Accessibility</h3>
-                        <p>Democratize expert-level problem-solving capabilities, making them available to more people</p>
+                        <h3 data-i18n="accessibility-title">Accessibility</h3>
+                        <p data-i18n="accessibility-desc">Democratize expert-level problem-solving capabilities, making them available to more people</p>
                     </div>
                 </div>
             </div>
@@ -1316,34 +2450,32 @@
         <section class="section" id="examples">
             <div class="section-content">
                 <div class="section-header">
-                    <div class="section-subtitle">Real-World Examples</div>
-                    <h2 class="section-title">AI in Action</h2>
-                    <p class="section-description">
-                        Explore how AI is solving real problems across different industries
-                    </p>
+                    <div class="section-subtitle" data-i18n="examples-subtitle">Real-World Examples</div>
+                    <h2 class="section-title" data-i18n="examples-title">AI in Action</h2>
+                    <p class="section-description" data-i18n="examples-desc">Explore how AI is solving real problems across different industries</p>
                 </div>
                 <div class="data-layout">
                     <div class="data-sidebar">
-                        <div class="data-tab active" data-content="healthcare">Healthcare</div>
-                        <div class="data-tab" data-content="climate">Climate</div>
-                        <div class="data-tab" data-content="education">Education</div>
-                        <div class="data-tab" data-content="business">Business</div>
+                        <div class="data-tab active" data-content="healthcare" data-i18n="healthcare-tab">Healthcare</div>
+                        <div class="data-tab" data-content="climate" data-i18n="climate-tab">Climate</div>
+                        <div class="data-tab" data-content="education" data-i18n="education-tab">Education</div>
+                        <div class="data-tab" data-content="business" data-i18n="business-tab">Business</div>
                     </div>
                     <div class="data-content" id="data-content">
-                        <h3>Healthcare Solutions</h3>
-                        <p style="margin-bottom: 20px;">AI is revolutionizing medical diagnosis and treatment:</p>
+                        <h3>Solusi Kesehatan</h3>
+                        <p style="margin-bottom: 20px;">AI merevolusi diagnosis medis dan pengobatan:</p>
                         <ul style="list-style: none; padding: 0;">
                             <li style="padding: 15px 0; border-bottom: 1px solid rgba(56, 189, 248, 0.2);">
-                                <strong>Early Disease Detection:</strong> AI algorithms analyze medical images to detect cancer, heart disease, and other conditions earlier than traditional methods
+                                <strong>Deteksi Penyakit Dini:</strong> Algoritma AI menganalisis gambar medis untuk mendeteksi kanker, penyakit jantung, dan kondisi lainnya lebih awal daripada metode tradisional
                             </li>
                             <li style="padding: 15px 0; border-bottom: 1px solid rgba(56, 189, 248, 0.2);">
-                                <strong>Drug Discovery:</strong> Machine learning accelerates the identification of potential new medications, reducing development time from years to months
+                                <strong>Penemuan Obat:</strong> Machine learning mempercepat identifikasi obat potensial baru, mengurangi waktu pengembangan dari bertahun-tahun menjadi berbulan-bulan
                             </li>
                             <li style="padding: 15px 0; border-bottom: 1px solid rgba(56, 189, 248, 0.2);">
-                                <strong>Personalized Treatment:</strong> AI analyzes patient data to recommend customized treatment plans based on individual genetic profiles and medical history
+                                <strong>Pengobatan yang Dipersonalisasi:</strong> AI menganalisis data pasien untuk merekomendasikan rencana perawatan khusus berdasarkan profil genetik individu dan riwayat medis
                             </li>
                             <li style="padding: 15px 0;">
-                                <strong>Resource Optimization:</strong> Predictive models help hospitals manage staff, equipment, and bed allocation more efficiently
+                                <strong>Optimasi Sumber Daya:</strong> Model prediktif membantu rumah sakit mengelola staf, peralatan, dan alokasi tempat tidur lebih efisien
                             </li>
                         </ul>
                     </div>
@@ -1367,11 +2499,368 @@
                 <div class="particle"></div>
             </div>
             <div class="section-content" style="text-align: center;">
-                <h2 class="section-title" style="margin-bottom: 30px;">Ready to Solve Problems with AI?</h2>
-                <p class="section-description" style="margin-bottom: 40px;">
-                    Join thousands of professionals leveraging AI to tackle their biggest challenges
-                </p>
-                <button class="cta-button" onclick="window.location.href='#signup'">Start Your AI Journey</button>
+                <h2 class="section-title" style="margin-bottom: 30px;" data-i18n="cta-title">Ready to Solve Problems with AI?</h2>
+                <p class="section-description" style="margin-bottom: 40px;" data-i18n="cta-desc">Join thousands of professionals leveraging AI to tackle their biggest challenges</p>
+                <button class="cta-button" onclick="window.location.href='#signup'" data-i18n="cta-btn">Start Your AI Journey</button>
+            </div>
+        </section>
+
+        <!-- Performance Section -->
+        <section class="section" id="performance">
+            <div class="section-content">
+                <div class="section-header">
+                    <div class="section-subtitle" data-i18n="performance-subtitle">Performance & Results</div>
+                    <h2 class="section-title" data-i18n="performance-title">Performa AI IntelliChain</h2>
+                    <p class="section-description" data-i18n="performance-desc">Lihat bagaimana AI kami melampaui model kompetitor dan menghadirkan hasil nyata untuk bisnis Anda</p>
+                </div>
+                <div class="performance-container">
+                    <!-- Left: Bar Charts Comparison -->
+                    <div class="performance-chart">
+                        <h3 class="chart-title" data-i18n="comparison-title">Perbandingan dengan Model AI Lainnya</h3>
+                        
+                        <!-- Kecepatan -->
+                        <div class="performance-metric">
+                            <div class="metric-header">
+                                <span class="metric-label" data-i18n="speed-label">Kecepatan</span>
+                            </div>
+                            <div class="model-bars">
+                                <div class="model-bar">
+                                    <div class="model-name">IntelliChain</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill intellichain" style="width: 0%;" data-target="92"></div>
+                                    </div>
+                                    <span class="bar-value">92%</span>
+                                </div>
+                                <div class="model-bar">
+                                    <div class="model-name">ChatGPT</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill chatgpt" style="width: 0%;" data-target="78"></div>
+                                    </div>
+                                    <span class="bar-value">78%</span>
+                                </div>
+                                <div class="model-bar">
+                                    <div class="model-name">Gemini</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill gemini" style="width: 0%;" data-target="75"></div>
+                                    </div>
+                                    <span class="bar-value">75%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Akurasi -->
+                        <div class="performance-metric">
+                            <div class="metric-header">
+                                <span class="metric-label" data-i18n="accuracy-label">Akurasi</span>
+                            </div>
+                            <div class="model-bars">
+                                <div class="model-bar">
+                                    <div class="model-name">IntelliChain</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill intellichain" style="width: 0%;" data-target="95"></div>
+                                    </div>
+                                    <span class="bar-value">95%</span>
+                                </div>
+                                <div class="model-bar">
+                                    <div class="model-name">ChatGPT</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill chatgpt" style="width: 0%;" data-target="89"></div>
+                                    </div>
+                                    <span class="bar-value">89%</span>
+                                </div>
+                                <div class="model-bar">
+                                    <div class="model-name">Gemini</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill gemini" style="width: 0%;" data-target="87"></div>
+                                    </div>
+                                    <span class="bar-value">87%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Efisiensi -->
+                        <div class="performance-metric">
+                            <div class="metric-header">
+                                <span class="metric-label" data-i18n="efficiency-label">Efisiensi</span>
+                            </div>
+                            <div class="model-bars">
+                                <div class="model-bar">
+                                    <div class="model-name">IntelliChain</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill intellichain" style="width: 0%;" data-target="88"></div>
+                                    </div>
+                                    <span class="bar-value">88%</span>
+                                </div>
+                                <div class="model-bar">
+                                    <div class="model-name">ChatGPT</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill chatgpt" style="width: 0%;" data-target="82"></div>
+                                    </div>
+                                    <span class="bar-value">82%</span>
+                                </div>
+                                <div class="model-bar">
+                                    <div class="model-name">Gemini</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill gemini" style="width: 0%;" data-target="80"></div>
+                                    </div>
+                                    <span class="bar-value">80%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Keandalan -->
+                        <div class="performance-metric">
+                            <div class="metric-header">
+                                <span class="metric-label" data-i18n="reliability-label">Keandalan</span>
+                            </div>
+                            <div class="model-bars">
+                                <div class="model-bar">
+                                    <div class="model-name">IntelliChain</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill intellichain" style="width: 0%;" data-target="98"></div>
+                                    </div>
+                                    <span class="bar-value">98%</span>
+                                </div>
+                                <div class="model-bar">
+                                    <div class="model-name">ChatGPT</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill chatgpt" style="width: 0%;" data-target="94"></div>
+                                    </div>
+                                    <span class="bar-value">94%</span>
+                                </div>
+                                <div class="model-bar">
+                                    <div class="model-name">Gemini</div>
+                                    <div class="bar-container">
+                                        <div class="bar-fill gemini" style="width: 0%;" data-target="92"></div>
+                                    </div>
+                                    <span class="bar-value">92%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Case Studies -->
+                    <div class="performance-cards">
+                        <div class="perf-card">
+                            <div class="perf-card-content">
+                                <div class="perf-card-icon">🏥</div>
+                                <h3 class="perf-card-title" data-i18n="hospital-title">Rumah Sakit Terkemuka</h3>
+                                <p class="perf-card-desc" data-i18n="hospital-desc">Dari kewalahan data pasien menjadi sistem terorganisir sempurna</p>
+                                <p class="perf-card-stat" data-i18n="hospital-stat">📊 85% lebih cepat</p>
+                            </div>
+                        </div>
+
+                        <div class="perf-card">
+                            <div class="perf-card-content">
+                                <div class="perf-card-icon">🏢</div>
+                                <h3 class="perf-card-title" data-i18n="business-title">Perusahaan E-Commerce</h3>
+                                <p class="perf-card-desc" data-i18n="business-desc">Optimasi inventory dan prediksi demand dengan presisi tinggi</p>
+                                <p class="perf-card-stat" data-i18n="business-stat">💰 3x ROI</p>
+                            </div>
+                        </div>
+
+                        <div class="perf-card">
+                            <div class="perf-card-content">
+                                <div class="perf-card-icon">🔬</div>
+                                <h3 class="perf-card-title" data-i18n="research-title">Institusi Penelitian</h3>
+                                <p class="perf-card-desc" data-i18n="research-desc">Percepatan analisis data penelitian hingga 10x lebih cepat</p>
+                                <p class="perf-card-stat" data-i18n="research-stat">🚀 10x lebih cepat</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="section" id="testimonials">
+            <div class="section-content">
+                <div class="section-header">
+                    <div class="section-subtitle" data-i18n="testimonials-subtitle">Client Success Stories</div>
+                    <h2 class="section-title" data-i18n="testimonials-title">What Our Clients Say</h2>
+                    <p class="section-description" data-i18n="testimonials-desc">Discover how organizations worldwide are transforming their operations with IntelliChain AI</p>
+                </div>
+                <div class="testimonials-container">
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👨‍⚕️</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-1-name">Dr. Rajesh Kumar</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-1-role">Chief Medical Officer, Apollo Healthcare</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-1-text">IntelliChain Labs has revolutionized our patient data management. We've reduced diagnostic time by 40% and improved accuracy significantly. The system integrates seamlessly with our existing infrastructure.</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👩‍💼</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-2-name">Sarah Chen</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-2-role">Director of Operations, TechVision Retail</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-2-text">The inventory optimization feature has been a game-changer for us. We've reduced stockouts by 35% and minimized excess inventory by 28%. The ROI was evident within the first quarter.</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👨‍🔬</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-3-name">Prof. Marcus Weber</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-3-role">Lead Researcher, Berlin Institute of Technology</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-3-text">Our research team's productivity has increased tenfold. What used to take months of data analysis now takes days. IntelliChain's pattern recognition is exceptional.</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👩‍💻</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-4-name">Jessica Adams</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-4-role">VP Technology, FinanceFlow Solutions</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-4-text">Fraud detection improved dramatically with IntelliChain. We've caught 3x more suspicious transactions compared to our previous system. The false positive rate is remarkably low.</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👨‍💼</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-5-name">James Mitchell</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-5-role">CEO, Global Manufacturing Corp</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-5-text">Predictive maintenance has saved us millions in equipment downtime. We're now running at 94% efficiency, up from 78%. Outstanding support from the IntelliChain team.</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👩‍🏫</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-6-name">Dr. Lisa Anderson</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-6-role">Head of EdTech, Global Education Foundation</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-6-text">The personalized learning recommendations have improved student engagement by 52% and graduation rates by 18%. IntelliChain truly understands adaptive education.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases by Industry Section -->
+        <section class="section" id="use-cases">
+            <div class="section-content">
+                <div class="section-header">
+                    <div class="section-subtitle" data-i18n="usecases-subtitle">Industry Solutions</div>
+                    <h2 class="section-title" data-i18n="usecases-title">IntelliChain AI by Industry</h2>
+                    <p class="section-description" data-i18n="usecases-desc">Discover tailored AI solutions for your specific industry challenges</p>
+                </div>
+                <div class="usecases-grid">
+                    <div class="usecase-card">
+                        <div class="usecase-icon">🏥</div>
+                        <h3 class="usecase-title" data-i18n="healthcare-uc-title">Healthcare</h3>
+                        <p class="usecase-subtitle" data-i18n="healthcare-uc-subtitle">Medical AI & Patient Analytics</p>
+                        <ul class="usecase-benefits">
+                            <li data-i18n="healthcare-uc-1">Diagnostic imaging analysis</li>
+                            <li data-i18n="healthcare-uc-2">Patient risk prediction</li>
+                            <li data-i18n="healthcare-uc-3">Drug discovery acceleration</li>
+                            <li data-i18n="healthcare-uc-4">Hospital resource optimization</li>
+                        </ul>
+                        <p class="usecase-metric">
+                            <span class="metric-value">40-60%</span>
+                            <span class="metric-label" data-i18n="healthcare-uc-metric">Faster diagnosis</span>
+                        </p>
+                    </div>
+
+                    <div class="usecase-card">
+                        <div class="usecase-icon">💰</div>
+                        <h3 class="usecase-title" data-i18n="finance-uc-title">Finance</h3>
+                        <p class="usecase-subtitle" data-i18n="finance-uc-subtitle">Risk Management & Trading</p>
+                        <ul class="usecase-benefits">
+                            <li data-i18n="finance-uc-1">Fraud detection & prevention</li>
+                            <li data-i18n="finance-uc-2">Credit risk assessment</li>
+                            <li data-i18n="finance-uc-3">Algorithmic trading</li>
+                            <li data-i18n="finance-uc-4">Market trend forecasting</li>
+                        </ul>
+                        <p class="usecase-metric">
+                            <span class="metric-value">3x</span>
+                            <span class="metric-label" data-i18n="finance-uc-metric">More fraud detected</span>
+                        </p>
+                    </div>
+
+                    <div class="usecase-card">
+                        <div class="usecase-icon">🛍️</div>
+                        <h3 class="usecase-title" data-i18n="retail-uc-title">Retail & E-Commerce</h3>
+                        <p class="usecase-subtitle" data-i18n="retail-uc-subtitle">Customer Intelligence & Operations</p>
+                        <ul class="usecase-benefits">
+                            <li data-i18n="retail-uc-1">Inventory optimization</li>
+                            <li data-i18n="retail-uc-2">Demand forecasting</li>
+                            <li data-i18n="retail-uc-3">Personalized recommendations</li>
+                            <li data-i18n="retail-uc-4">Customer churn prediction</li>
+                        </ul>
+                        <p class="usecase-metric">
+                            <span class="metric-value">28%</span>
+                            <span class="metric-label" data-i18n="retail-uc-metric">Inventory waste reduction</span>
+                        </p>
+                    </div>
+
+                    <div class="usecase-card">
+                        <div class="usecase-icon">🏭</div>
+                        <h3 class="usecase-title" data-i18n="manufacturing-uc-title">Manufacturing</h3>
+                        <p class="usecase-subtitle" data-i18n="manufacturing-uc-subtitle">Predictive Maintenance & Quality</p>
+                        <ul class="usecase-benefits">
+                            <li data-i18n="manufacturing-uc-1">Equipment failure prediction</li>
+                            <li data-i18n="manufacturing-uc-2">Quality control automation</li>
+                            <li data-i18n="manufacturing-uc-3">Supply chain optimization</li>
+                            <li data-i18n="manufacturing-uc-4">Production efficiency</li>
+                        </ul>
+                        <p class="usecase-metric">
+                            <span class="metric-value">16%</span>
+                            <span class="metric-label" data-i18n="manufacturing-uc-metric">Equipment downtime reduction</span>
+                        </p>
+                    </div>
+
+                    <div class="usecase-card">
+                        <div class="usecase-icon">📚</div>
+                        <h3 class="usecase-title" data-i18n="education-uc-title">Education</h3>
+                        <p class="usecase-subtitle" data-i18n="education-uc-subtitle">Adaptive Learning & Insights</p>
+                        <ul class="usecase-benefits">
+                            <li data-i18n="education-uc-1">Personalized learning paths</li>
+                            <li data-i18n="education-uc-2">Student performance prediction</li>
+                            <li data-i18n="education-uc-3">Automated grading & feedback</li>
+                            <li data-i18n="education-uc-4">Dropout risk identification</li>
+                        </ul>
+                        <p class="usecase-metric">
+                            <span class="metric-value">52%</span>
+                            <span class="metric-label" data-i18n="education-uc-metric">Engagement increase</span>
+                        </p>
+                    </div>
+
+                    <div class="usecase-card">
+                        <div class="usecase-icon">🚗</div>
+                        <h3 class="usecase-title" data-i18n="automotive-uc-title">Automotive & Logistics</h3>
+                        <p class="usecase-subtitle" data-i18n="automotive-uc-subtitle">Route Optimization & Fleet Mgmt</p>
+                        <ul class="usecase-benefits">
+                            <li data-i18n="automotive-uc-1">Route optimization</li>
+                            <li data-i18n="automotive-uc-2">Fleet maintenance prediction</li>
+                            <li data-i18n="automotive-uc-3">Autonomous vehicle support</li>
+                            <li data-i18n="automotive-uc-4">Driver behavior analysis</li>
+                        </ul>
+                        <p class="usecase-metric">
+                            <span class="metric-value">22%</span>
+                            <span class="metric-label" data-i18n="automotive-uc-metric">Fuel cost reduction</span>
+                        </p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -1379,28 +2868,26 @@
         <section class="section" id="materials">
             <div class="section-content">
                 <div class="section-header">
-                    <div class="section-subtitle">Technology & Materials</div>
-                    <h2 class="section-title">The Science Behind AI</h2>
-                    <p class="section-description">
-                        Understanding the fundamental components and materials that power artificial intelligence systems
-                    </p>
+                    <div class="section-subtitle" data-i18n="materials-subtitle">Technology & Materials</div>
+                    <h2 class="section-title" data-i18n="materials-title">The Science Behind AI</h2>
+                    <p class="section-description" data-i18n="materials-desc">Understanding the fundamental components and materials that power artificial intelligence systems</p>
                 </div>
                 <div class="stack-layout">
                     <div class="stack-item">
-                        <h3>🧠 Neural Network Architecture</h3>
-                        <p>Modern AI systems are built on neural networks inspired by the human brain, using interconnected layers of artificial neurons that process and transform data through mathematical operations. These networks can have millions or even billions of parameters that are fine-tuned during training.</p>
+                        <h3 data-i18n="neural-title">🧠 Neural Network Architecture</h3>
+                        <p data-i18n="neural-desc">Modern AI systems are built on neural networks inspired by the human brain, using interconnected layers of artificial neurons that process and transform data through mathematical operations. These networks can have millions or even billions of parameters that are fine-tuned during training.</p>
                     </div>
                     <div class="stack-item">
-                        <h3>💾 Training Data & Datasets</h3>
-                        <p>High-quality, diverse datasets are the foundation of effective AI systems. These datasets can include text, images, audio, video, and sensor data collected from real-world scenarios. The quality and quantity of training data directly impact model performance and generalization capabilities.</p>
+                        <h3 data-i18n="data-title">💾 Training Data & Datasets</h3>
+                        <p data-i18n="data-desc">High-quality, diverse datasets are the foundation of effective AI systems. These datasets can include text, images, audio, video, and sensor data collected from real-world scenarios. The quality and quantity of training data directly impact model performance and generalization capabilities.</p>
                     </div>
                     <div class="stack-item">
-                        <h3>⚙️ Computing Infrastructure</h3>
-                        <p>AI requires massive computational power provided by specialized hardware like GPUs (Graphics Processing Units) and TPUs (Tensor Processing Units). These processors can perform thousands of calculations simultaneously, enabling the training of large-scale models in reasonable timeframes.</p>
+                        <h3 data-i18n="compute-title">⚙️ Computing Infrastructure</h3>
+                        <p data-i18n="compute-desc">AI requires massive computational power provided by specialized hardware like GPUs (Graphics Processing Units) and TPUs (Tensor Processing Units). These processors can perform thousands of calculations simultaneously, enabling the training of large-scale models in reasonable timeframes.</p>
                     </div>
                     <div class="stack-item">
-                        <h3>📊 Algorithms & Models</h3>
-                        <p>Various algorithms power different AI capabilities: supervised learning for classification, unsupervised learning for pattern discovery, reinforcement learning for decision-making, and transformer architectures for language understanding. Each algorithm is optimized for specific types of problems.</p>
+                        <h3 data-i18n="algorithm-title">📊 Algorithms & Models</h3>
+                        <p data-i18n="algorithm-desc">Various algorithms power different AI capabilities: supervised learning for classification, unsupervised learning for pattern discovery, reinforcement learning for decision-making, and transformer architectures for language understanding. Each algorithm is optimized for specific types of problems.</p>
                     </div>
                 </div>
             </div>
@@ -1410,42 +2897,40 @@
         <section class="section" id="implementation">
             <div class="section-content">
                 <div class="section-header">
-                    <div class="section-subtitle">Implementation Guide</div>
-                    <h2 class="section-title">How to Deploy IntelliChain Labs</h2>
-                    <p class="section-description">
-                        Step-by-step approach to successfully implementing AI in your organization
-                    </p>
+                    <div class="section-subtitle" data-i18n="implementation-subtitle">Implementation Guide</div>
+                    <h2 class="section-title" data-i18n="implementation-title">How to Deploy IntelliChain Labs</h2>
+                    <p class="section-description" data-i18n="implementation-desc">Step-by-step approach to successfully implementing AI in your organization</p>
                 </div>
                 <div class="grid-layout">
                     <div class="grid-item">
                         <div class="grid-icon">🎯</div>
-                        <h3>Define Objectives</h3>
-                        <p>Clearly identify business problems that AI can solve. Set measurable goals and success metrics to track implementation progress and ROI.</p>
+                        <h3 data-i18n="objectives-title">Define Objectives</h3>
+                        <p data-i18n="objectives-desc">Clearly identify business problems that AI can solve. Set measurable goals and success metrics to track implementation progress and ROI.</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">📋</div>
-                        <h3>Data Preparation</h3>
-                        <p>Collect, clean, and organize relevant data. Ensure data quality, consistency, and proper labeling for training purposes.</p>
+                        <h3 data-i18n="preparation-title">Data Preparation</h3>
+                        <p data-i18n="preparation-desc">Collect, clean, and organize relevant data. Ensure data quality, consistency, and proper labeling for training purposes.</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🔬</div>
-                        <h3>Model Selection</h3>
-                        <p>Choose appropriate AI models based on your problem type, data characteristics, and computational resources available.</p>
+                        <h3 data-i18n="selection-title">Model Selection</h3>
+                        <p data-i18n="selection-desc">Choose appropriate AI models based on your problem type, data characteristics, and computational resources available.</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">⚡</div>
-                        <h3>Training & Testing</h3>
-                        <p>Train models on prepared data, validate performance, and iterate to improve accuracy and reliability.</p>
+                        <h3 data-i18n="training-title">Training & Testing</h3>
+                        <p data-i18n="training-desc">Train models on prepared data, validate performance, and iterate to improve accuracy and reliability.</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🚀</div>
-                        <h3>Deployment</h3>
-                        <p>Deploy trained models to production environments with proper monitoring, scaling, and security measures.</p>
+                        <h3 data-i18n="deployment-title">Deployment</h3>
+                        <p data-i18n="deployment-desc">Deploy trained models to production environments with proper monitoring, scaling, and security measures.</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🔄</div>
-                        <h3>Continuous Improvement</h3>
-                        <p>Monitor model performance, gather feedback, and regularly update with new data to maintain effectiveness.</p>
+                        <h3 data-i18n="improvement-title">Continuous Improvement</h3>
+                        <p data-i18n="improvement-desc">Monitor model performance, gather feedback, and regularly update with new data to maintain effectiveness.</p>
                     </div>
                 </div>
             </div>
@@ -1455,28 +2940,26 @@
         <section class="section" id="challenges">
             <div class="section-content">
                 <div class="section-header">
-                    <div class="section-subtitle">Considerations</div>
-                    <h2 class="section-title">AI Implementation Challenges</h2>
-                    <p class="section-description">
-                        Understanding and addressing common obstacles in AI adoption
-                    </p>
+                    <div class="section-subtitle" data-i18n="challenges-subtitle">Considerations</div>
+                    <h2 class="section-title" data-i18n="challenges-title">AI Implementation Challenges</h2>
+                    <p class="section-description" data-i18n="challenges-desc">Understanding and addressing common obstacles in AI adoption</p>
                 </div>
                 <div class="stack-layout">
                     <div class="stack-item">
-                        <h3>⚖️ Ethical Considerations</h3>
-                        <p>AI systems must be developed responsibly, considering fairness, transparency, and accountability. Bias in training data can lead to discriminatory outcomes. Organizations must establish ethical guidelines and regularly audit AI decisions to ensure they align with human values and legal requirements.</p>
+                        <h3 data-i18n="ethical-title">⚖️ Ethical Considerations</h3>
+                        <p data-i18n="ethical-desc">AI systems must be developed responsibly, considering fairness, transparency, and accountability. Bias in training data can lead to discriminatory outcomes. Organizations must establish ethical guidelines and regularly audit AI decisions to ensure they align with human values and legal requirements.</p>
                     </div>
                     <div class="stack-item">
-                        <h3>🔒 Privacy & Security</h3>
-                        <p>Protecting sensitive data used in AI systems is crucial. Implement encryption, access controls, and privacy-preserving techniques like federated learning. Ensure compliance with regulations like GDPR, CCPA, and industry-specific data protection requirements.</p>
+                        <h3 data-i18n="privacy-title">🔒 Privacy & Security</h3>
+                        <p data-i18n="privacy-desc">Protecting sensitive data used in AI systems is crucial. Implement encryption, access controls, and privacy-preserving techniques like federated learning. Ensure compliance with regulations like GDPR, CCPA, and industry-specific data protection requirements.</p>
                     </div>
                     <div class="stack-item">
-                        <h3>💰 Cost Management</h3>
-                        <p>AI implementation requires significant investment in infrastructure, talent, and ongoing maintenance. Cloud computing costs can escalate quickly with large-scale deployments. Develop a clear ROI strategy and consider cost-effective alternatives like pre-trained models and AutoML platforms.</p>
+                        <h3 data-i18n="cost-title">💰 Cost Management</h3>
+                        <p data-i18n="cost-desc">AI implementation requires significant investment in infrastructure, talent, and ongoing maintenance. Cloud computing costs can escalate quickly with large-scale deployments. Develop a clear ROI strategy and consider cost-effective alternatives like pre-trained models and AutoML platforms.</p>
                     </div>
                     <div class="stack-item">
-                        <h3>👥 Skills Gap</h3>
-                        <p>There's a shortage of AI talent globally. Organizations need data scientists, ML engineers, and AI specialists. Consider investing in training existing staff, partnering with universities, or using AI-as-a-Service platforms that reduce the need for deep technical expertise.</p>
+                        <h3 data-i18n="skills-title">👥 Skills Gap</h3>
+                        <p data-i18n="skills-desc">There's a shortage of AI talent globally. Organizations need data scientists, ML engineers, and AI specialists. Consider investing in training existing staff, partnering with universities, or using AI-as-a-Service platforms that reduce the need for deep technical expertise.</p>
                     </div>
                 </div>
             </div>
@@ -1486,42 +2969,40 @@
         <section class="section" id="future">
             <div class="section-content">
                 <div class="section-header">
-                    <div class="section-subtitle">Looking Ahead</div>
-                    <h2 class="section-title">The Future of AI</h2>
-                    <p class="section-description">
-                        Emerging trends and technologies shaping the next generation of artificial intelligence
-                    </p>
+                    <div class="section-subtitle" data-i18n="future-subtitle">Looking Ahead</div>
+                    <h2 class="section-title" data-i18n="future-title">The Future of AI</h2>
+                    <p class="section-description" data-i18n="future-desc">Emerging trends and technologies shaping the next generation of artificial intelligence</p>
                 </div>
                 <div class="grid-layout">
                     <div class="grid-item">
                         <div class="grid-icon">🧬</div>
-                        <h3>AGI Development</h3>
-                        <p>Progress toward Artificial General Intelligence that can perform any intellectual task humans can do, with reasoning across domains.</p>
+                        <h3 data-i18n="agi-title">AGI Development</h3>
+                        <p data-i18n="agi-desc">Advances toward General Artificial Intelligence capable of performing any intellectual task that humans can do, with cross-domain reasoning.</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🌐</div>
-                        <h3>Edge AI</h3>
-                        <p>AI processing moving to edge devices for faster response times, reduced latency, and enhanced privacy.</p>
+                        <h3 data-i18n="edge-title">Edge AI</h3>
+                        <p data-i18n="edge-desc">AI processing moves to edge devices for faster response times, reduced latency, and enhanced privacy.</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🔗</div>
-                        <h3>AI + Blockchain</h3>
-                        <p>Combining AI with blockchain for transparent, verifiable, and decentralized AI systems.</p>
+                        <h3 data-i18n="blockchain-title">AI + Blockchain</h3>
+                        <p data-i18n="blockchain-desc">Combining AI with blockchain for transparent, verifiable, and decentralized AI systems.</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🎨</div>
-                        <h3>Generative AI</h3>
-                        <p>Advanced models creating original content, art, music, code, and designs with human-level creativity.</p>
+                        <h3 data-i18n="generative-title">Generative AI</h3>
+                        <p data-i18n="generative-desc">Advanced models that create original content, art, music, code, and designs with human-level creativity.</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🤝</div>
-                        <h3>Human-AI Collaboration</h3>
-                        <p>Systems designed to augment human capabilities rather than replace them, enhancing productivity and creativity.</p>
+                        <h3 data-i18n="collaboration-title">Human-AI Collaboration</h3>
+                        <p data-i18n="collaboration-desc">Systems designed to augment human capabilities rather than replace them, enhancing productivity and creativity.</p>
                     </div>
                     <div class="grid-item">
                         <div class="grid-icon">🌱</div>
-                        <h3>Sustainable AI</h3>
-                        <p>Energy-efficient models and green computing practices to reduce AI's environmental impact.</p>
+                        <h3 data-i18n="sustainable-title">Sustainable AI</h3>
+                        <p data-i18n="sustainable-desc">Energy-efficient models and green computing practices to reduce the environmental impact of AI.</p>
                     </div>
                 </div>
             </div>
@@ -1532,8 +3013,8 @@
     <footer>
         <div class="footer-content">
             <div class="footer-about">
-                <h3>IntelliChain Labs</h3>
-                <p>Empowering humans to solve complex problems with artificial intelligence. Join us in shaping the future of problem-solving.</p>
+                <h3 data-i18n="footer-about-title">IntelliChain Labs</h3>
+                <p data-i18n="footer-about-desc">Empowering humans to solve complex problems with artificial intelligence. Join us in shaping the future of problem-solving.</p>
                 <div class="social-links">
                     <a href="#" aria-label="Facebook">📘</a>
                     <a href="#" aria-label="Twitter">🐦</a>
@@ -1542,35 +3023,35 @@
                 </div>
             </div>
             <div class="footer-links">
-                <h4>Solutions</h4>
+                <h4 data-i18n="footer-solutions-title">Solutions</h4>
                 <ul>
-                    <li><a href="#healthcare">Healthcare AI</a></li>
-                    <li><a href="#climate">Climate Solutions</a></li>
-                    <li><a href="#education">Education Tech</a></li>
-                    <li><a href="#business">Business Intelligence</a></li>
+                    <li><a href="#healthcare" data-i18n="footer-healthcare">Healthcare AI</a></li>
+                    <li><a href="#climate" data-i18n="footer-climate">Climate Solutions</a></li>
+                    <li><a href="#education" data-i18n="footer-education">Education Technology</a></li>
+                    <li><a href="#business" data-i18n="footer-business">Business Intelligence</a></li>
                 </ul>
             </div>
             <div class="footer-links">
-                <h4>Company</h4>
+                <h4 data-i18n="footer-company-title">Company</h4>
                 <ul>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#careers">Careers</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#about" data-i18n="footer-about">About Us</a></li>
+                    <li><a href="#careers" data-i18n="footer-careers">Careers</a></li>
+                    <li><a href="#blog" data-i18n="footer-blog">Blog</a></li>
+                    <li><a href="#contact" data-i18n="footer-contact">Contact Us</a></li>
                 </ul>
             </div>
             <div class="footer-links">
-                <h4>Resources</h4>
+                <h4 data-i18n="footer-resources-title">Resources</h4>
                 <ul>
-                    <li><a href="#docs">Documentation</a></li>
-                    <li><a href="#api">API Reference</a></li>
-                    <li><a href="#support">Support Center</a></li>
-                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#docs" data-i18n="footer-docs">Documentation</a></li>
+                    <li><a href="#api" data-i18n="footer-api">API Reference</a></li>
+                    <li><a href="#support" data-i18n="footer-support">Support Center</a></li>
+                    <li><a href="#privacy" data-i18n="footer-privacy">Privacy Policy</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 IntelliChain Labs. All rights reserved.</p>
+            <p data-i18n="footer-copyright">&copy; 2024 IntelliChain Labs. All rights reserved.</p>
         </div>
     </footer>
 
@@ -1618,15 +3099,18 @@
         
         // Different positions for each section - more dynamic movement
         const modelPositions = [
-            { x: 8, y: -1, z: 5, rotation: 0 },           // Hero - right side
-            { x: -8, y: 3, z: 5, rotation: 0}, // Applications - left side, high
-            { x: 9, y: -2, z: 5, rotation: Math.PI / 2 }, // Benefits - right side, low
-            { x: -15, y: -5, z: 6, rotation: Math.PI /1.533 },     // Examples - left side, mid
-            { x: 0, y: 0, z: 6, rotation: Math.PI * 2 }, // CTA - center
-            { x: 8, y: -1, z: 5, rotation: Math.PI * 2 }, // Materials - right
-            { x: -8, y: 2, z: 5, rotation: Math.PI / 6 }, // Implementation - left
-            { x: 9, y: -2, z: 5, rotation: Math.PI / 3 }, // Challenges - right
-            { x: 0, y: 1, z: 5, rotation: Math.PI / 2 }   // Future - center
+            { x: 8, y: -1, z: 5, rotation: 0 },           // 0: Hero - right side
+            { x: -8, y: 3, z: 5, rotation: 0}, // 1: Applications - left side, high
+            { x: 9, y: -2, z: 5, rotation: Math.PI / 2 }, // 2: Benefits - right side, low
+            { x: -15, y: -5, z: 6, rotation: Math.PI /1.533 },     // 3: Examples - left side, mid
+            { x: 0, y: 0, z: 6, rotation: Math.PI * 2 }, // 4: CTA - center
+            { x: 8, y: -1, z: 5, rotation: Math.PI * 2 }, // 5: Performance - right
+            { x: -8, y: 2, z: 5, rotation: Math.PI / 6 }, // 6: Testimonials - left
+            { x: 9, y: -2, z: 5, rotation: Math.PI / 3 }, // 7: Use Cases - right
+            { x: 8, y: -1, z: 5, rotation: Math.PI * 2 }, // 8: Materials - right
+            { x: -8, y: 2, z: 5, rotation: Math.PI / 6 }, // 9: Implementation - left
+            { x: -12, y: -3, z: 6, rotation: Math.PI * 1.5 }, // 10: Challenges - left side, rotated
+            { x: 10, y: 2, z: 5, rotation: Math.PI / 4 }   // 11: Future - right side, rotated
         ];
 
         // Track mouse movement
@@ -1637,6 +3121,10 @@
 
         // Load GLB model
         const loader = new THREE.GLTFLoader();
+        let modelEntranceAnimationTime = 0;
+        const MODEL_ENTRANCE_DURATION = 3.0; // 3 seconds entrance animation
+        let modelLoaded = false;
+
         loader.load(
             'modelC.glb',
             (gltf) => {
@@ -1689,6 +3177,9 @@
                     scene.add(model3D);
                 }
                 
+                // Initialize entrance animation state
+                modelEntranceAnimationTime = 0;
+                modelLoaded = true;
                 
             },
             undefined,
@@ -1705,15 +3196,49 @@
                 const isMobile = window.innerWidth < 768;
                 const targetPos = modelPositions[Math.min(currentSectionIndex, modelPositions.length - 1)];
                 
+                // Entrance animation (first 2 seconds after loading)
+                if (modelLoaded && modelEntranceAnimationTime < MODEL_ENTRANCE_DURATION) {
+                    modelEntranceAnimationTime += 1 / 60; // Assuming 60 FPS
+                    const entranceProgress = modelEntranceAnimationTime / MODEL_ENTRANCE_DURATION;
+                    
+                    // Easing function (ease-in-out cubic)
+                    const easeProgress = entranceProgress < 0.5
+                        ? 4 * entranceProgress * entranceProgress * entranceProgress
+                        : 1 - Math.pow(-2 * entranceProgress + 2, 3) / 2;
+                    
+                    // Option 1: Fade in + Scale up
+                    // Set initial opacity to 0, then fade in
+                    model3D.traverse((child) => {
+                        if (child.isMesh && child.material) {
+                            child.material.transparent = true;
+                            child.material.opacity = easeProgress;
+                        }
+                    });
+                    
+                    // Option 2: Rotate & Zoom in (spin while moving closer)
+                    // Spin rotation during entrance
+                    const spinRotation = Math.PI * 5 * easeProgress; // 5 full rotations
+                    model3D.rotation.y = MODEL_BASE_ROTATION.y + spinRotation;
+                    
+                    // Zoom in from far distance
+                    const startZ = 50; // Start far away
+                    const endZ = targetPos.z; // End at target
+                    model3D.position.z = startZ + (endZ - startZ) * easeProgress;
+                }
+                
                 if (!isMobile) {
                     // Desktop: full movement and rotation
-                    model3D.position.x += (targetPos.x - model3D.position.x) * 0.05;
-                    model3D.position.y += (targetPos.y - model3D.position.y) * 0.05;
-                    model3D.position.z += (targetPos.z - model3D.position.z) * 0.05;
+                    if (modelEntranceAnimationTime >= MODEL_ENTRANCE_DURATION) {
+                        model3D.position.x += (targetPos.x - model3D.position.x) * 0.05;
+                        model3D.position.y += (targetPos.y - model3D.position.y) * 0.05;
+                        model3D.position.z += (targetPos.z - model3D.position.z) * 0.05;
+                    }
                     
-                    // Rotate while moving between sections
-                    const targetRotationZ = MODEL_BASE_ROTATION.z + targetPos.rotation;
-                    model3D.rotation.z += (targetRotationZ - model3D.rotation.z) * 0.05;
+                    // Rotate while moving between sections (only after entrance completes)
+                    if (modelEntranceAnimationTime >= MODEL_ENTRANCE_DURATION) {
+                        const targetRotationZ = MODEL_BASE_ROTATION.z + targetPos.rotation;
+                        model3D.rotation.z += (targetRotationZ - model3D.rotation.z) * 0.05;
+                    }
                     
                     // Subtle rotation following cursor - add to base rotation
                     const targetRotationY = MODEL_BASE_ROTATION.y + (mouseX * 0.2);
@@ -1746,7 +3271,7 @@
         animate();
 
         // Hero title animation - per word
-        const heroTitle = "How AI Can Help Humans Solve Problems";
+        const heroTitle = "Bagaimana AI Membantu Manusia Memecahkan Masalah";
         const heroTitleElement = document.getElementById('hero-title');
         const words = heroTitle.split(' ');
         
@@ -1754,7 +3279,7 @@
             const span = document.createElement('span');
             span.className = 'hero-title-word';
             span.textContent = word;
-            span.style.animationDelay = `${index * 0.2}s`;
+            span.style.animationDelay = `${index * 0.25}s`; // Adjusted for 3s total sync
             heroTitleElement.appendChild(span);
             
             if (index < words.length - 1) {
@@ -1792,25 +3317,79 @@
         const footer = document.querySelector('footer');
         observer.observe(footer);
 
+        // Performance chart animation with bar charts
+        let performanceAnimated = false;
+        const performanceSection = document.getElementById('performance');
+        if (performanceSection) {
+            const perfObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !performanceAnimated) {
+                        performanceAnimated = true;
+                        const bars = performanceSection.querySelectorAll('.bar-fill');
+                        bars.forEach((bar, index) => {
+                            setTimeout(() => {
+                                const target = parseFloat(bar.getAttribute('data-target'));
+                                bar.style.width = target + '%';
+                            }, index * 50);
+                        });
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            perfObserver.observe(performanceSection);
+        }
+
+        // Testimonials section animations
+        let testimonialsAnimated = false;
+        const testimonialsSection = document.getElementById('testimonials');
+        if (testimonialsSection) {
+            const testimonialsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !testimonialsAnimated) {
+                        testimonialsAnimated = true;
+                        // Animation is handled by CSS, just need to trigger visibility
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            testimonialsObserver.observe(testimonialsSection);
+        }
+
+        // Use Cases section animations
+        let usecasesAnimated = false;
+        const usecasesSection = document.getElementById('use-cases');
+        if (usecasesSection) {
+            const usecasesObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !usecasesAnimated) {
+                        usecasesAnimated = true;
+                        // Animation is handled by CSS, just need to trigger visibility
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            usecasesObserver.observe(usecasesSection);
+        }
+
         // Scroll-driven animation for CTA section
         function updateCTAAnimation() {
             if (!ctaSection || !lineLeft || !lineRight || !explosionCircle || !ctaContent) return;
-            
+
             const rect = ctaSection.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-            
-            // Calculate progress based on scroll position
-            const sectionTop = rect.top -20;
-            const sectionHeight = rect.height -20;
-            
-            // Progress from 0 to 1 as section scrolls through viewport
+
+            // Calculate progress based on scroll position (0..1)
+            const sectionTop = rect.top - 20;
+            const sectionHeight = rect.height - 20;
+
             let progress = 0;
             if (sectionTop < windowHeight && sectionTop > -sectionHeight) {
-                progress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight * 1.5)));
+                progress = (windowHeight - sectionTop) / (windowHeight * 1.5);
+                progress = Math.max(0, Math.min(1, progress));
             } else if (sectionTop <= -sectionHeight) {
                 progress = 1;
             }
-            
+
             // Phase 1: Lines slide in (0 - 0.3)
             if (progress <= 0.3) {
                 const lineProgress = progress / 0.3;
@@ -1826,51 +3405,50 @@
             } else if (progress > 0.5 && progress <= 0.65) {
                 const fadeProgress = (progress - 0.5) / 0.15;
                 const lineOpacity = Math.max(0, 1 - fadeProgress);
-                lineLeft.style.opacity = lineOpacity;
-                lineRight.style.opacity = lineOpacity;
+                lineLeft.style.opacity = String(lineOpacity);
+                lineRight.style.opacity = String(lineOpacity);
             } else if (progress > 0.65) {
                 lineLeft.style.opacity = '0';
                 lineRight.style.opacity = '0';
             }
-            
+
             // Phase 2: Explosion (0.3 - 0.5)
-            if (progress > 1.5 && progress <= 1.8) {
-                const explodeProgress = (progress - 0.3) / 0.2;
-                const scale = explodeProgress * 20;
+            if (progress > 0.3 && progress <= 0.5) {
+                const explodeProgress = (progress - 0.3) / 0.2; // 0..1
+                const scale = 1 + explodeProgress * 8; // subtle scale to avoid huge jumps
                 const opacity = Math.max(0, 1 - explodeProgress);
                 explosionCircle.style.transform = `translate(-50%, -50%) scale(${scale})`;
-                explosionCircle.style.opacity = opacity;
+                explosionCircle.style.opacity = String(opacity);
             } else {
                 explosionCircle.style.opacity = '0';
+                explosionCircle.style.transform = 'translate(-50%, -50%) scale(1)';
             }
-            
+
             // Phase 3: Particles shoot out (0.4 - 0.6)
             if (progress > 0.4 && progress <= 0.6) {
-                const particleProgress = (progress - 0.4) / 0.2;
+                const particleProgress = (progress - 0.4) / 0.2; // 0..1
+                const clamped = Math.max(0, Math.min(1, particleProgress));
                 particles.forEach((particle, index) => {
                     const angle = (index / particles.length) * Math.PI * 2;
-                    const distance = particleProgress * 120;
+                    const distance = clamped * 120;
                     const x = Math.cos(angle) * distance;
                     const y = Math.sin(angle) * distance;
-                    const opacity = Math.max(0, 1 - particleProgress);
+                    const opacity = Math.max(0, 1 - clamped);
                     particle.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
-                    particle.style.opacity = opacity;
-                });
-            } else if (progress > 0.6) {
-                particles.forEach(particle => {
-                    particle.style.opacity = '0';
+                    particle.style.opacity = String(opacity);
                 });
             } else {
                 particles.forEach(particle => {
                     particle.style.opacity = '0';
+                    particle.style.transform = 'translate(-50%, -50%)';
                 });
             }
-            
-            // Phase 4: Content appears (0.5 onwards) - Always visible after 0.5
-            if (progress > 0.4) {
-                const contentProgress = Math.min(1, (progress - 0.5) / 0.2);
+
+            // Phase 4: Content appears (0.5 onwards) - animate between 0.5 and 0.7
+            if (progress >= 0.5) {
+                const contentProgress = Math.max(0, Math.min(1, (progress - 0.5) / 0.2));
                 const scale = 0.9 + (contentProgress * 0.1);
-                ctaContent.style.opacity = contentProgress;
+                ctaContent.style.opacity = String(contentProgress);
                 ctaContent.style.transform = `scale(${scale})`;
             } else {
                 // Before animation, show content at low opacity
@@ -1939,6 +3517,640 @@
                 mobileNav.classList.remove('active');
             });
         });
+
+        // Dark mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        // Initialize theme from localStorage
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                htmlElement.classList.add('dark');
+                themeToggle.textContent = '☀️';
+            } else {
+                htmlElement.classList.remove('dark');
+                themeToggle.textContent = '🌙';
+            }
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const isDark = htmlElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+        });
+
+        // Initialize theme on page load
+        initTheme();
+
+        // Language switching system
+        const langToggle = document.getElementById('langToggle');
+        let currentLanguage = localStorage.getItem('language') || detectBrowserLanguage();
+
+        // Detect user's default browser language
+        function detectBrowserLanguage() {
+            const browserLang = navigator.language || navigator.userLanguage;
+            if (browserLang.startsWith('id')) {
+                return 'id'; // Indonesian
+            }
+            return 'en'; // Default to English
+        }
+
+        // Translation dictionary
+        const translations = {
+            en: {
+                // Navigation
+                'home': 'Home',
+                'solutions': 'Solutions',
+                'applications': 'Applications',
+                'benefits': 'Benefits',
+                'examples': 'Examples',
+                'resources': 'Resources',
+                'materials': 'Materials',
+                'implementation': 'Implementation',
+                'challenges': 'Challenges',
+                'future': 'Future Trends',
+                'login': 'Login',
+                'get-started': 'Get Started',
+
+                // Hero Section
+                'hero-title': 'How AI Can Help Humans Solve Problems',
+                'hero-desc': 'Discover how artificial intelligence transforms complex challenges into actionable solutions, empowering humans to make better decisions and solve problems faster than ever before.',
+                'explore-btn': 'Explore IntelliChain Labs',
+
+                // Applications Section
+                'applications-subtitle': 'Problem-Solving Applications',
+                'applications-title': 'IntelliChain Labs',
+                'applications-desc': 'Artificial intelligence provides innovative approaches to tackle complex problems across various domains',
+                'pattern-title': '🔍 Pattern Recognition',
+                'pattern-desc': 'AI identifies hidden patterns in massive datasets that humans might miss, enabling early detection of issues and opportunities in healthcare, finance, and research.',
+                'decision-title': '⚡ Real-Time Decision Making',
+                'decision-desc': 'Process complex information instantly to provide data-driven recommendations, helping professionals make faster, more accurate decisions in critical situations.',
+                'predictive-title': '🎯 Predictive Analysis',
+                'predictive-desc': 'Forecast future trends and outcomes based on historical data, allowing organizations to proactively address problems before they escalate.',
+                'automation-title': '🤖 Automation of Repetitive Tasks',
+                'automation-desc': 'Free human minds from mundane tasks, allowing them to focus on creative problem-solving and strategic thinking that requires human insight.',
+
+                // Benefits Section
+                'benefits-subtitle': 'Key Benefits',
+                'benefits-title': 'Why AI Excels at Problem Solving',
+                'benefits-desc': 'Understanding the unique advantages AI brings to human problem-solving efforts',
+                'speed-title': 'Speed',
+                'speed-desc': 'Analyze millions of data points in seconds, accelerating problem identification and solution development exponentially',
+                'learning-title': 'Learning',
+                'learning-desc': 'Continuously improve from experience, becoming more effective at solving similar problems over time',
+                'accuracy-title': 'Accuracy',
+                'accuracy-desc': 'Reduce human error in complex calculations and data analysis, providing more reliable solutions',
+                'scalability-title': 'Scalability',
+                'scalability-desc': 'Handle increasing volumes of problems simultaneously without degradation in performance',
+                'innovation-title': 'Innovation',
+                'innovation-desc': 'Discover novel solutions by exploring possibilities beyond traditional human thinking patterns',
+                'accessibility-title': 'Accessibility',
+                'accessibility-desc': 'Democratize expert-level problem-solving capabilities, making them available to more people',
+
+                // Examples Section
+                'examples-subtitle': 'Real-World Examples',
+                'examples-title': 'AI in Action',
+                'examples-desc': 'Explore how AI is solving real problems across different industries',
+                'healthcare-tab': 'Healthcare',
+                'climate-tab': 'Climate',
+                'education-tab': 'Education',
+                'business-tab': 'Business',
+                'healthcare-title': 'Healthcare Solutions',
+                'healthcare-intro': 'AI is revolutionizing medical diagnosis and treatment:',
+                'detection-title': 'Early Disease Detection',
+                'detection-desc': 'AI algorithms analyze medical images to detect cancer, heart disease, and other conditions earlier than traditional methods',
+                'drug-title': 'Drug Discovery',
+                'drug-desc': 'Machine learning accelerates the identification of potential new medications, reducing development time from years to months',
+                'treatment-title': 'Personalized Treatment',
+                'treatment-desc': 'AI analyzes patient data to recommend customized treatment plans based on individual genetic profiles and medical history',
+                'resource-title': 'Resource Optimization',
+                'resource-desc': 'Predictive models help hospitals manage staff, equipment, and bed allocation more efficiently',
+
+                // CTA Section
+                'cta-title': 'Ready to Solve Problems with AI?',
+                'cta-desc': 'Join thousands of professionals leveraging AI to tackle their biggest challenges',
+                'cta-btn': 'Start Your AI Journey',
+
+                // Performance Section
+                'performance-subtitle': 'Performance & Results',
+                'performance-title': 'IntelliChain AI Performance',
+                'performance-desc': 'See how our AI surpasses competitor models like ChatGPT and Gemini, delivering real results for your business',
+                'comparison-title': 'Comparison with Leading AI Models',
+                'speed-label': 'Speed',
+                'accuracy-label': 'Accuracy',
+                'efficiency-label': 'Efficiency',
+                'reliability-label': 'Reliability',
+                'hospital-title': 'Leading Hospital',
+                'hospital-desc': 'From overwhelmed patient data management to perfectly organized system',
+                'hospital-stat': '📊 85% faster',
+                'business-title': 'E-Commerce Company',
+                'business-desc': 'Inventory optimization and demand prediction with high precision',
+                'business-stat': '💰 3x ROI',
+                'research-title': 'Research Institution',
+                'research-desc': 'Accelerate research data analysis up to 10x faster',
+                'research-stat': '🚀 10x faster',
+
+                // Materials Section
+                'materials-subtitle': 'Technology & Materials',
+                'materials-title': 'The Science Behind AI',
+                'materials-desc': 'Understanding the fundamental components and materials that power artificial intelligence systems',
+                'neural-title': '🧠 Neural Network Architecture',
+                'neural-desc': 'Modern AI systems are built on neural networks inspired by the human brain, using interconnected layers of artificial neurons that process and transform data through mathematical operations. These networks can have millions or even billions of parameters that are fine-tuned during training.',
+                'data-title': '💾 Training Data & Datasets',
+                'data-desc': 'High-quality, diverse datasets are the foundation of effective AI systems. These datasets can include text, images, audio, video, and sensor data collected from real-world scenarios. The quality and quantity of training data directly impact model performance and generalization capabilities.',
+                'compute-title': '⚙️ Computing Infrastructure',
+                'compute-desc': 'AI requires massive computational power provided by specialized hardware like GPUs (Graphics Processing Units) and TPUs (Tensor Processing Units). These processors can perform thousands of calculations simultaneously, enabling the training of large-scale models in reasonable timeframes.',
+                'algorithm-title': '📊 Algorithms & Models',
+                'algorithm-desc': 'Various algorithms power different AI capabilities: supervised learning for classification, unsupervised learning for pattern discovery, reinforcement learning for decision-making, and transformer architectures for language understanding. Each algorithm is optimized for specific types of problems.',
+
+                // Implementation Section
+                'implementation-subtitle': 'Implementation Guide',
+                'implementation-title': 'How to Deploy IntelliChain Labs',
+                'implementation-desc': 'Step-by-step approach to successfully implementing AI in your organization',
+                'objectives-title': 'Define Objectives',
+                'objectives-desc': 'Clearly identify business problems that AI can solve. Set measurable goals and success metrics to track implementation progress and ROI.',
+                'preparation-title': 'Data Preparation',
+                'preparation-desc': 'Collect, clean, and organize relevant data. Ensure data quality, consistency, and proper labeling for training purposes.',
+                'selection-title': 'Model Selection',
+                'selection-desc': 'Choose appropriate AI models based on your problem type, data characteristics, and computational resources available.',
+                'training-title': 'Training & Testing',
+                'training-desc': 'Train models on prepared data, validate performance, and iterate to improve accuracy and reliability.',
+                'deployment-title': 'Deployment',
+                'deployment-desc': 'Deploy trained models to production environments with proper monitoring, scaling, and security measures.',
+                'improvement-title': 'Continuous Improvement',
+                'improvement-desc': 'Monitor model performance, gather feedback, and regularly update with new data to maintain effectiveness.',
+
+                // Challenges Section
+                'challenges-subtitle': 'Considerations',
+                'challenges-title': 'AI Implementation Challenges',
+                'challenges-desc': 'Understanding and addressing common obstacles in AI adoption',
+                'ethical-title': '⚖️ Ethical Considerations',
+                'ethical-desc': 'AI systems must be developed responsibly, considering fairness, transparency, and accountability. Bias in training data can lead to discriminatory outcomes. Organizations must establish ethical guidelines and regularly audit AI decisions to ensure they align with human values and legal requirements.',
+                'privacy-title': '🔒 Privacy & Security',
+                'privacy-desc': 'Protecting sensitive data used in AI systems is crucial. Implement encryption, access controls, and privacy-preserving techniques like federated learning. Ensure compliance with regulations like GDPR, CCPA, and industry-specific data protection requirements.',
+                'cost-title': '💰 Cost Management',
+                'cost-desc': 'AI implementation requires significant investment in infrastructure, talent, and ongoing maintenance. Cloud computing costs can escalate quickly with large-scale deployments. Develop a clear ROI strategy and consider cost-effective alternatives like pre-trained models and AutoML platforms.',
+                'skills-title': '👥 Skills Gap',
+                'skills-desc': 'There\'s a shortage of AI talent globally. Organizations need data scientists, ML engineers, and AI specialists. Consider investing in training existing staff, partnering with universities, or using AI-as-a-Service platforms that reduce the need for deep technical expertise.',
+
+                // Future Section
+                'future-subtitle': 'Looking Ahead',
+                'future-title': 'The Future of AI',
+                'future-desc': 'Emerging trends and technologies shaping the next generation of artificial intelligence',
+                'agi-title': 'AGI Development',
+                'agi-desc': 'Progress toward Artificial General Intelligence that can perform any intellectual task humans can do, with reasoning across domains.',
+                'edge-title': 'Edge AI',
+                'edge-desc': 'AI processing moving to edge devices for faster response times, reduced latency, and enhanced privacy.',
+                'blockchain-title': 'AI + Blockchain',
+                'blockchain-desc': 'Combining AI with blockchain for transparent, verifiable, and decentralized AI systems.',
+                'generative-title': 'Generative AI',
+                'generative-desc': 'Advanced models creating original content, art, music, code, and designs with human-level creativity.',
+                'collaboration-title': 'Human-AI Collaboration',
+                'collaboration-desc': 'Systems designed to augment human capabilities rather than replace them, enhancing productivity and creativity.',
+                'sustainable-title': 'Sustainable AI',
+                'sustainable-desc': 'Energy-efficient models and green computing practices to reduce AI\'s environmental impact.',
+
+                // Footer
+                'footer-about-title': 'IntelliChain Labs',
+                'footer-about-desc': 'Empowering humans to solve complex problems with artificial intelligence. Join us in shaping the future of problem-solving.',
+                'footer-solutions-title': 'Solutions',
+                'footer-healthcare': 'Healthcare AI',
+                'footer-climate': 'Climate Solutions',
+                'footer-education': 'Education Technology',
+                'footer-business': 'Business Intelligence',
+                'footer-company-title': 'Company',
+                'footer-about': 'About Us',
+                'footer-careers': 'Careers',
+                'footer-blog': 'Blog',
+                'footer-contact': 'Contact Us',
+                'footer-resources-title': 'Resources',
+                'footer-docs': 'Documentation',
+                'footer-api': 'API Reference',
+                'footer-support': 'Support Center',
+                'footer-privacy': 'Privacy Policy',
+                'footer-copyright': '© 2024 IntelliChain Labs. All rights reserved.',
+
+                // Testimonials Section
+                'testimonials-subtitle': 'Client Success Stories',
+                'testimonials-title': 'What Our Clients Say',
+                'testimonials-desc': 'Discover how organizations worldwide are transforming their operations with IntelliChain AI',
+                'testimonial-1-name': 'Dr. Rajesh Kumar',
+                'testimonial-1-role': 'Chief Medical Officer, Apollo Healthcare',
+                'testimonial-1-text': 'IntelliChain Labs has revolutionized our patient data management. We\'ve reduced diagnostic time by 40% and improved accuracy significantly. The system integrates seamlessly with our existing infrastructure.',
+                'testimonial-2-name': 'Sarah Chen',
+                'testimonial-2-role': 'Director of Operations, TechVision Retail',
+                'testimonial-2-text': 'The inventory optimization feature has been a game-changer for us. We\'ve reduced stockouts by 35% and minimized excess inventory by 28%. The ROI was evident within the first quarter.',
+                'testimonial-3-name': 'Prof. Marcus Weber',
+                'testimonial-3-role': 'Lead Researcher, Berlin Institute of Technology',
+                'testimonial-3-text': 'Our research team\'s productivity has increased tenfold. What used to take months of data analysis now takes days. IntelliChain\'s pattern recognition is exceptional.',
+                'testimonial-4-name': 'Jessica Adams',
+                'testimonial-4-role': 'VP Technology, FinanceFlow Solutions',
+                'testimonial-4-text': 'Fraud detection improved dramatically with IntelliChain. We\'ve caught 3x more suspicious transactions compared to our previous system. The false positive rate is remarkably low.',
+                'testimonial-5-name': 'James Mitchell',
+                'testimonial-5-role': 'CEO, Global Manufacturing Corp',
+                'testimonial-5-text': 'Predictive maintenance has saved us millions in equipment downtime. We\'re now running at 94% efficiency, up from 78%. Outstanding support from the IntelliChain team.',
+                'testimonial-6-name': 'Dr. Lisa Anderson',
+                'testimonial-6-role': 'Head of EdTech, Global Education Foundation',
+                'testimonial-6-text': 'The personalized learning recommendations have improved student engagement by 52% and graduation rates by 18%. IntelliChain truly understands adaptive education.',
+
+                // Use Cases Section
+                'usecases-subtitle': 'Industry Solutions',
+                'usecases-title': 'IntelliChain AI by Industry',
+                'usecases-desc': 'Discover tailored AI solutions for your specific industry challenges',
+                'healthcare-uc-title': 'Healthcare',
+                'healthcare-uc-subtitle': 'Medical AI & Patient Analytics',
+                'healthcare-uc-1': 'Diagnostic imaging analysis',
+                'healthcare-uc-2': 'Patient risk prediction',
+                'healthcare-uc-3': 'Drug discovery acceleration',
+                'healthcare-uc-4': 'Hospital resource optimization',
+                'healthcare-uc-metric': 'Faster diagnosis',
+                'finance-uc-title': 'Finance',
+                'finance-uc-subtitle': 'Risk Management & Trading',
+                'finance-uc-1': 'Fraud detection & prevention',
+                'finance-uc-2': 'Credit risk assessment',
+                'finance-uc-3': 'Algorithmic trading',
+                'finance-uc-4': 'Market trend forecasting',
+                'finance-uc-metric': 'More fraud detected',
+                'retail-uc-title': 'Retail & E-Commerce',
+                'retail-uc-subtitle': 'Customer Intelligence & Operations',
+                'retail-uc-1': 'Inventory optimization',
+                'retail-uc-2': 'Demand forecasting',
+                'retail-uc-3': 'Personalized recommendations',
+                'retail-uc-4': 'Customer churn prediction',
+                'retail-uc-metric': 'Inventory waste reduction',
+                'manufacturing-uc-title': 'Manufacturing',
+                'manufacturing-uc-subtitle': 'Predictive Maintenance & Quality',
+                'manufacturing-uc-1': 'Equipment failure prediction',
+                'manufacturing-uc-2': 'Quality control automation',
+                'manufacturing-uc-3': 'Supply chain optimization',
+                'manufacturing-uc-4': 'Production efficiency',
+                'manufacturing-uc-metric': 'Equipment downtime reduction',
+                'education-uc-title': 'Education',
+                'education-uc-subtitle': 'Adaptive Learning & Insights',
+                'education-uc-1': 'Personalized learning paths',
+                'education-uc-2': 'Student performance prediction',
+                'education-uc-3': 'Automated grading & feedback',
+                'education-uc-4': 'Dropout risk identification',
+                'education-uc-metric': 'Engagement increase',
+                'automotive-uc-title': 'Automotive & Logistics',
+                'automotive-uc-subtitle': 'Route Optimization & Fleet Mgmt',
+                'automotive-uc-1': 'Route optimization',
+                'automotive-uc-2': 'Fleet maintenance prediction',
+                'automotive-uc-3': 'Autonomous vehicle support',
+                'automotive-uc-4': 'Driver behavior analysis',
+                'automotive-uc-metric': 'Fuel cost reduction',
+            },
+            id: {
+                // Navigation
+                'home': 'Beranda',
+                'solutions': 'Solusi',
+                'applications': 'Aplikasi',
+                'benefits': 'Manfaat',
+                'examples': 'Contoh',
+                'resources': 'Sumber Daya',
+                'materials': 'Materi',
+                'implementation': 'Implementasi',
+                'challenges': 'Tantangan',
+                'future': 'Tren Masa Depan',
+                'login': 'Masuk',
+                'get-started': 'Mulai Sekarang',
+
+                // Hero Section
+                'hero-title': 'Bagaimana AI Membantu Manusia Memecahkan Masalah',
+                'hero-desc': 'Temukan bagaimana kecerdasan buatan mengubah tantangan yang kompleks menjadi solusi yang dapat ditindaklanjuti, memberdayakan manusia untuk membuat keputusan yang lebih baik dan menyelesaikan masalah lebih cepat dari sebelumnya.',
+                'explore-btn': 'Jelajahi IntelliChain Labs',
+
+                // Applications Section
+                'applications-subtitle': 'Aplikasi Pemecahan Masalah',
+                'applications-title': 'IntelliChain Labs',
+                'applications-desc': 'Kecerdasan buatan menyediakan pendekatan inovatif untuk mengatasi masalah kompleks di berbagai domain',
+                'pattern-title': '🔍 Pengenalan Pola',
+                'pattern-desc': 'AI mengidentifikasi pola tersembunyi dalam kumpulan data besar yang mungkin terlewatkan manusia, memungkinkan deteksi dini masalah dan peluang di bidang kesehatan, keuangan, dan penelitian.',
+                'decision-title': '⚡ Pengambilan Keputusan Real-Time',
+                'decision-desc': 'Memproses informasi kompleks secara instan untuk memberikan rekomendasi berbasis data, membantu profesional membuat keputusan lebih cepat dan akurat dalam situasi kritis.',
+                'predictive-title': '🎯 Analisis Prediktif',
+                'predictive-desc': 'Meramalkan tren dan hasil masa depan berdasarkan data historis, memungkinkan organisasi secara proaktif mengatasi masalah sebelum berkembang.',
+                'automation-title': '🤖 Otomasi Tugas Berulang',
+                'automation-desc': 'Membebaskan pikiran manusia dari tugas-tugas membosankan, memungkinkan mereka fokus pada pemecahan masalah kreatif dan pemikiran strategis yang memerlukan wawasan manusia.',
+
+                // Benefits Section
+                'benefits-subtitle': 'Manfaat Utama',
+                'benefits-title': 'Mengapa AI Unggul dalam Pemecahan Masalah',
+                'benefits-desc': 'Memahami keuntungan unik yang dibawa AI untuk upaya pemecahan masalah manusia',
+                'speed-title': 'Kecepatan',
+                'speed-desc': 'Analisis jutaan titik data dalam hitungan detik, mempercepat identifikasi masalah dan pengembangan solusi secara eksponensial',
+                'learning-title': 'Pembelajaran',
+                'learning-desc': 'Terus berkembang dari pengalaman, menjadi lebih efektif dalam memecahkan masalah serupa seiring waktu',
+                'accuracy-title': 'Akurasi',
+                'accuracy-desc': 'Mengurangi kesalahan manusia dalam perhitungan kompleks dan analisis data, memberikan solusi yang lebih andal',
+                'scalability-title': 'Skalabilitas',
+                'scalability-desc': 'Menangani volume masalah yang meningkat secara bersamaan tanpa penurunan performa',
+                'innovation-title': 'Inovasi',
+                'innovation-desc': 'Menemukan solusi baru dengan menjelajahi kemungkinan di luar pola pemikiran manusia tradisional',
+                'accessibility-title': 'Aksesibilitas',
+                'accessibility-desc': 'Demokratisasi kemampuan pemecahan masalah tingkat ahli, menjadikannya tersedia untuk lebih banyak orang',
+
+                // Examples Section
+                'examples-subtitle': 'Contoh Dunia Nyata',
+                'examples-title': 'AI dalam Aksi',
+                'examples-desc': 'Jelajahi bagaimana AI memecahkan masalah nyata di berbagai industri',
+                'healthcare-tab': 'Kesehatan',
+                'climate-tab': 'Iklim',
+                'education-tab': 'Pendidikan',
+                'business-tab': 'Bisnis',
+                'healthcare-title': 'Solusi Kesehatan',
+                'healthcare-intro': 'AI merevolusi diagnosis medis dan pengobatan:',
+                'detection-title': 'Deteksi Penyakit Dini',
+                'detection-desc': 'Algoritma AI menganalisis gambar medis untuk mendeteksi kanker, penyakit jantung, dan kondisi lainnya lebih awal daripada metode tradisional',
+                'drug-title': 'Penemuan Obat',
+                'drug-desc': 'Machine learning mempercepat identifikasi obat potensial baru, mengurangi waktu pengembangan dari bertahun-tahun menjadi berbulan-bulan',
+                'treatment-title': 'Pengobatan yang Dipersonalisasi',
+                'treatment-desc': 'AI menganalisis data pasien untuk merekomendasikan rencana perawatan khusus berdasarkan profil genetik individu dan riwayat medis',
+                'resource-title': 'Optimasi Sumber Daya',
+                'resource-desc': 'Model prediktif membantu rumah sakit mengelola staf, peralatan, dan alokasi tempat tidur lebih efisien',
+
+                // CTA Section
+                'cta-title': 'Siap Memecahkan Masalah dengan AI?',
+                'cta-desc': 'Bergabunglah dengan ribuan profesional yang memanfaatkan AI untuk mengatasi tantangan terbesar mereka',
+                'cta-btn': 'Mulai Perjalanan AI Anda',
+
+                // Performance Section
+                'performance-subtitle': 'Performa & Hasil',
+                'performance-title': 'Performa AI IntelliChain',
+                'performance-desc': 'Lihat bagaimana AI kami melampaui model kompetitor seperti ChatGPT dan Gemini, menghadirkan hasil nyata untuk bisnis Anda',
+                'comparison-title': 'Perbandingan dengan Model AI Terkemuka',
+                'speed-label': 'Kecepatan',
+                'accuracy-label': 'Akurasi',
+                'efficiency-label': 'Efisiensi',
+                'reliability-label': 'Keandalan',
+                'hospital-title': 'Rumah Sakit Terkemuka',
+                'hospital-desc': 'Dari kewalahan data pasien menjadi sistem terorganisir sempurna',
+                'hospital-stat': '📊 85% lebih cepat',
+                'business-title': 'Perusahaan E-Commerce',
+                'business-desc': 'Optimasi inventory dan prediksi demand dengan presisi tinggi',
+                'business-stat': '💰 3x ROI',
+                'research-title': 'Institusi Penelitian',
+                'research-desc': 'Percepatan analisis data penelitian hingga 10x lebih cepat',
+                'research-stat': '🚀 10x lebih cepat',
+
+                // Testimonials Section
+                'testimonials-subtitle': 'Kisah Sukses Klien',
+                'testimonials-title': 'Apa Kata Klien Kami',
+                'testimonials-desc': 'Temukan bagaimana organisasi di seluruh dunia mentransformasi operasi mereka dengan IntelliChain AI',
+                'testimonial-1-name': 'Dr. Rajesh Kumar',
+                'testimonial-1-role': 'Kepala Petugas Medis, Apollo Healthcare',
+                'testimonial-1-text': 'IntelliChain Labs telah merevolusi manajemen data pasien kami. Kami telah mengurangi waktu diagnosa sebesar 40% dan meningkatkan akurasi secara signifikan. Sistem ini terintegrasi dengan mulus dengan infrastruktur yang ada.',
+                'testimonial-2-name': 'Sarah Chen',
+                'testimonial-2-role': 'Direktur Operasi, TechVision Retail',
+                'testimonial-2-text': 'Fitur optimasi inventaris telah mengubah permainan untuk kami. Kami telah mengurangi kekurangan stok sebesar 35% dan meminimalkan kelebihan inventaris sebesar 28%. ROI terlihat jelas dalam kuartal pertama.',
+                'testimonial-3-name': 'Prof. Marcus Weber',
+                'testimonial-3-role': 'Peneliti Terkemuka, Berlin Institute of Technology',
+                'testimonial-3-text': 'Produktivitas tim penelitian kami meningkat sepuluh kali lipat. Apa yang dulu membutuhkan waktu berbulan-bulan untuk analisis data sekarang hanya perlu waktu beberapa hari. Pengenalan pola IntelliChain luar biasa.',
+                'testimonial-4-name': 'Jessica Adams',
+                'testimonial-4-role': 'VP Teknologi, FinanceFlow Solutions',
+                'testimonial-4-text': 'Deteksi penipuan meningkat secara dramatis dengan IntelliChain. Kami telah menangkap 3x lebih banyak transaksi mencurigakan dibandingkan sistem sebelumnya. Tingkat positif palsu sangat rendah.',
+                'testimonial-5-name': 'James Mitchell',
+                'testimonial-5-role': 'CEO, Global Manufacturing Corp',
+                'testimonial-5-text': 'Pemeliharaan prediktif telah menghemat kami jutaan dalam waktu henti peralatan. Kami sekarang beroperasi dengan efisiensi 94%, naik dari 78%. Dukungan luar biasa dari tim IntelliChain.',
+                'testimonial-6-name': 'Dr. Lisa Anderson',
+                'testimonial-6-role': 'Kepala EdTech, Global Education Foundation',
+                'testimonial-6-text': 'Rekomendasi pembelajaran yang dipersonalisasi telah meningkatkan keterlibatan siswa sebesar 52% dan tingkat kelulusan sebesar 18%. IntelliChain benar-benar memahami pendidikan adaptif.',
+
+                // Use Cases Section
+                'usecases-subtitle': 'Solusi Industri',
+                'usecases-title': 'IntelliChain AI menurut Industri',
+                'usecases-desc': 'Temukan solusi AI yang disesuaikan untuk tantangan industri spesifik Anda',
+                'healthcare-uc-title': 'Kesehatan',
+                'healthcare-uc-subtitle': 'AI Medis & Analitik Pasien',
+                'healthcare-uc-1': 'Analisis pencitraan diagnostik',
+                'healthcare-uc-2': 'Prediksi risiko pasien',
+                'healthcare-uc-3': 'Akselerasi penemuan obat',
+                'healthcare-uc-4': 'Optimasi sumber daya rumah sakit',
+                'healthcare-uc-metric': 'Diagnosa lebih cepat',
+                'finance-uc-title': 'Keuangan',
+                'finance-uc-subtitle': 'Manajemen Risiko & Perdagangan',
+                'finance-uc-1': 'Deteksi & pencegahan penipuan',
+                'finance-uc-2': 'Penilaian risiko kredit',
+                'finance-uc-3': 'Perdagangan algoritma',
+                'finance-uc-4': 'Peramalan tren pasar',
+                'finance-uc-metric': 'Lebih banyak penipuan terdeteksi',
+                'retail-uc-title': 'Ritel & E-Commerce',
+                'retail-uc-subtitle': 'Intelijen Pelanggan & Operasi',
+                'retail-uc-1': 'Optimasi inventaris',
+                'retail-uc-2': 'Peramalan permintaan',
+                'retail-uc-3': 'Rekomendasi yang dipersonalisasi',
+                'retail-uc-4': 'Prediksi churn pelanggan',
+                'retail-uc-metric': 'Pengurangan limbah inventaris',
+                'manufacturing-uc-title': 'Manufaktur',
+                'manufacturing-uc-subtitle': 'Pemeliharaan Prediktif & Kualitas',
+                'manufacturing-uc-1': 'Prediksi kegagalan peralatan',
+                'manufacturing-uc-2': 'Otomasi kontrol kualitas',
+                'manufacturing-uc-3': 'Optimasi rantai pasokan',
+                'manufacturing-uc-4': 'Efisiensi produksi',
+                'manufacturing-uc-metric': 'Pengurangan waktu henti peralatan',
+                'education-uc-title': 'Pendidikan',
+                'education-uc-subtitle': 'Pembelajaran Adaptif & Wawasan',
+                'education-uc-1': 'Jalur pembelajaran yang dipersonalisasi',
+                'education-uc-2': 'Prediksi kinerja siswa',
+                'education-uc-3': 'Penilaian & umpan balik otomatis',
+                'education-uc-4': 'Identifikasi risiko putus sekolah',
+                'education-uc-metric': 'Peningkatan keterlibatan',
+                'automotive-uc-title': 'Otomotif & Logistik',
+                'automotive-uc-subtitle': 'Optimasi Rute & Manajemen Armada',
+                'automotive-uc-1': 'Optimasi rute',
+                'automotive-uc-2': 'Prediksi pemeliharaan armada',
+                'automotive-uc-3': 'Dukungan kendaraan otonom',
+                'automotive-uc-4': 'Analisis perilaku pengemudi',
+                'automotive-uc-metric': 'Pengurangan biaya bahan bakar',
+
+                // Materials Section
+                'materials-subtitle': 'Teknologi & Materi',
+                'materials-title': 'Ilmu di Balik AI',
+                'materials-desc': 'Memahami komponen fundamental dan materi yang menjalankan sistem kecerdasan buatan',
+                'neural-title': '🧠 Arsitektur Jaringan Saraf',
+                'neural-desc': 'Sistem AI modern dibangun di atas jaringan saraf yang terinspirasi oleh otak manusia, menggunakan lapisan neuron buatan yang saling terhubung yang memproses dan mengubah data melalui operasi matematika. Jaringan ini dapat memiliki jutaan atau bahkan miliaran parameter yang disesuaikan selama pelatihan.',
+                'data-title': '💾 Data Pelatihan & Kumpulan Data',
+                'data-desc': 'Kumpulan data berkualitas tinggi dan beragam adalah fondasi sistem AI yang efektif. Kumpulan data ini dapat mencakup teks, gambar, audio, video, dan data sensor yang dikumpulkan dari skenario dunia nyata. Kualitas dan kuantitas data pelatihan secara langsung berdampak pada performa model dan kemampuan generalisasi.',
+                'compute-title': '⚙️ Infrastruktur Komputasi',
+                'compute-desc': 'AI memerlukan daya komputasi besar yang disediakan oleh perangkat keras khusus seperti GPU (Graphics Processing Units) dan TPU (Tensor Processing Units). Prosesor ini dapat melakukan ribuan perhitungan secara bersamaan, memungkinkan pelatihan model skala besar dalam waktu yang wajar.',
+                'algorithm-title': '📊 Algoritma & Model',
+                'algorithm-desc': 'Berbagai algoritma mendukung kemampuan AI yang berbeda: pembelajaran terbimbing untuk klasifikasi, pembelajaran tak terbimbing untuk penemuan pola, pembelajaran penguatan untuk pengambilan keputusan, dan arsitektur transformer untuk pemahaman bahasa. Setiap algoritma dioptimalkan untuk jenis masalah tertentu.',
+
+                // Implementation Section
+                'implementation-subtitle': 'Panduan Implementasi',
+                'implementation-title': 'Cara Menerapkan IntelliChain Labs',
+                'implementation-desc': 'Pendekatan langkah demi langkah untuk berhasil menerapkan AI dalam organisasi Anda',
+                'objectives-title': 'Tentukan Tujuan',
+                'objectives-desc': 'Identifikasi dengan jelas masalah bisnis yang dapat diselesaikan AI. Tetapkan tujuan terukur dan metrik kesuksesan untuk melacak kemajuan implementasi dan ROI.',
+                'preparation-title': 'Persiapan Data',
+                'preparation-desc': 'Kumpulkan, bersihkan, dan susun data yang relevan. Pastikan kualitas data, konsistensi, dan pelabelan yang tepat untuk tujuan pelatihan.',
+                'selection-title': 'Pemilihan Model',
+                'selection-desc': 'Pilih model AI yang sesuai berdasarkan jenis masalah, karakteristik data, dan sumber daya komputasi yang tersedia.',
+                'training-title': 'Pelatihan & Pengujian',
+                'training-desc': 'Latih model pada data yang disiapkan, validasi performa, dan ulangi untuk meningkatkan akurasi dan keandalan.',
+                'deployment-title': 'Penerapan',
+                'deployment-desc': 'Terapkan model terlatih ke lingkungan produksi dengan pemantauan, penskalaan, dan langkah keamanan yang sesuai.',
+                'improvement-title': 'Peningkatan Berkelanjutan',
+                'improvement-desc': 'Pantau performa model, kumpulkan umpan balik, dan perbarui secara teratur dengan data baru untuk mempertahankan keefektifan.',
+
+                // Challenges Section
+                'challenges-subtitle': 'Pertimbangan',
+                'challenges-title': 'Tantangan Implementasi AI',
+                'challenges-desc': 'Memahami dan mengatasi hambatan umum dalam adopsi AI',
+                'ethical-title': '⚖️ Pertimbangan Etika',
+                'ethical-desc': 'Sistem AI harus dikembangkan secara bertanggung jawab, mempertimbangkan keadilan, transparansi, dan akuntabilitas. Bias dalam data pelatihan dapat menyebabkan hasil yang diskriminatif. Organisasi harus menetapkan pedoman etika dan secara teratur melakukan audit keputusan AI untuk memastikan sesuai dengan nilai manusia dan persyaratan hukum.',
+                'privacy-title': '🔒 Privasi & Keamanan',
+                'privacy-desc': 'Melindungi data sensitif yang digunakan dalam sistem AI sangat penting. Terapkan enkripsi, kontrol akses, dan teknik pelestarian privasi seperti pembelajaran terfederasi. Pastikan kepatuhan terhadap peraturan seperti GDPR, CCPA, dan persyaratan perlindungan data khusus industri.',
+                'cost-title': '💰 Manajemen Biaya',
+                'cost-desc': 'Implementasi AI memerlukan investasi signifikan dalam infrastruktur, talenta, dan pemeliharaan berkelanjutan. Biaya komputasi cloud dapat meningkat pesat dengan penerapan skala besar. Kembangkan strategi ROI yang jelas dan pertimbangkan alternatif hemat biaya seperti model pra-terlatih dan platform AutoML.',
+                'skills-title': '👥 Kesenjangan Keterampilan',
+                'skills-desc': 'Ada kekurangan talenta AI secara global. Organisasi membutuhkan ilmuwan data, insinyur ML, dan spesialis AI. Pertimbangkan investasi dalam melatih staf yang ada, bermitra dengan universitas, atau menggunakan platform AI-as-a-Service yang mengurangi kebutuhan akan keahlian teknis yang mendalam.',
+
+                // Future Section
+                'future-subtitle': 'Melihat ke Depan',
+                'future-title': 'Masa Depan AI',
+                'future-desc': 'Tren yang sedang berkembang dan teknologi yang membentuk generasi AI berikutnya',
+                'agi-title': 'Pengembangan AGI',
+                'agi-desc': 'Kemajuan menuju Kecerdasan Buatan Umum yang dapat melakukan tugas intelektual apa pun yang bisa dilakukan manusia, dengan penalaran lintas domain.',
+                'edge-title': 'AI di Tepi',
+                'edge-desc': 'Pemrosesan AI bergerak ke perangkat tepi untuk waktu respons lebih cepat, latensi berkurang, dan privasi yang ditingkatkan.',
+                'blockchain-title': 'AI + Blockchain',
+                'blockchain-desc': 'Menggabungkan AI dengan blockchain untuk sistem AI yang transparan, dapat diverifikasi, dan terdesentralisasi.',
+                'generative-title': 'AI Generatif',
+                'generative-desc': 'Model canggih yang menciptakan konten orisinal, seni, musik, kode, dan desain dengan kreativitas tingkat manusia.',
+                'collaboration-title': 'Kolaborasi Manusia-AI',
+                'collaboration-desc': 'Sistem dirancang untuk meningkatkan kemampuan manusia daripada menggantikan mereka, meningkatkan produktivitas dan kreativitas.',
+                'sustainable-title': 'AI Berkelanjutan',
+                'sustainable-desc': 'Model hemat energi dan praktik komputasi hijau untuk mengurangi dampak lingkungan dari AI.',
+
+                // Footer
+                'footer-about-title': 'IntelliChain Labs',
+                'footer-about-desc': 'Memberdayakan manusia untuk memecahkan masalah kompleks dengan kecerdasan buatan. Bergabunglah dengan kami dalam membentuk masa depan pemecahan masalah.',
+                'footer-solutions-title': 'Solusi',
+                'footer-healthcare': 'AI Kesehatan',
+                'footer-climate': 'Solusi Iklim',
+                'footer-education': 'Teknologi Pendidikan',
+                'footer-business': 'Intelijen Bisnis',
+                'footer-company-title': 'Perusahaan',
+                'footer-about': 'Tentang Kami',
+                'footer-careers': 'Karir',
+                'footer-blog': 'Blog',
+                'footer-contact': 'Hubungi Kami',
+                'footer-resources-title': 'Sumber Daya',
+                'footer-docs': 'Dokumentasi',
+                'footer-api': 'Referensi API',
+                'footer-support': 'Pusat Dukungan',
+                'footer-privacy': 'Kebijakan Privasi',
+                'footer-copyright': '© 2024 IntelliChain Labs. Semua hak dilindungi.',
+            }
+        };
+
+        // Initialize language
+        function initLanguage() {
+            htmlElement.setAttribute('lang', currentLanguage);
+            langToggle.textContent = currentLanguage === 'id' ? 'EN' : 'ID';
+            applyLanguage(currentLanguage);
+        }
+
+        // Apply language translations
+        function applyLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            htmlElement.setAttribute('lang', lang);
+            langToggle.textContent = lang === 'id' ? 'EN' : 'ID';
+            
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+            
+            // Update hero title with animation
+            const heroTitle = translations[lang]['hero-title'];
+            const heroTitleElement = document.getElementById('hero-title');
+            heroTitleElement.innerHTML = '';
+            const words = heroTitle.split(' ');
+            words.forEach((word, index) => {
+                const span = document.createElement('span');
+                span.className = 'hero-title-word';
+                span.textContent = word;
+                span.style.animationDelay = `${index * 0.25}s`;
+                heroTitleElement.appendChild(span);
+                
+                if (index < words.length - 1) {
+                    heroTitleElement.appendChild(document.createTextNode(' '));
+                }
+            });
+            
+            // Update hero description
+            const heroDesc = document.querySelector('.hero-description');
+            if (heroDesc) {
+                heroDesc.textContent = translations[lang]['hero-desc'];
+            }
+            
+            // Update data content for tabs
+            updateDataContent(lang);
+        }
+        
+        // Update data tab content based on language
+        function updateDataContent(lang) {
+            const contentDataTranslated = {
+                healthcare: {
+                    title: translations[lang]['healthcare-title'],
+                    intro: translations[lang]['healthcare-intro'],
+                    items: [
+                        { 
+                            title: translations[lang]['detection-title'], 
+                            desc: translations[lang]['detection-desc']
+                        },
+                        { 
+                            title: translations[lang]['drug-title'], 
+                            desc: translations[lang]['drug-desc']
+                        },
+                        { 
+                            title: translations[lang]['treatment-title'], 
+                            desc: translations[lang]['treatment-desc']
+                        },
+                        { 
+                            title: translations[lang]['resource-title'], 
+                            desc: translations[lang]['resource-desc']
+                        }
+                    ]
+                }
+            };
+            
+            // If first tab is active, update its content
+            const activeTab = document.querySelector('.data-tab.active');
+            if (activeTab && activeTab.getAttribute('data-content') === 'healthcare') {
+                const dataContent = document.getElementById('data-content');
+                if (dataContent) {
+                    dataContent.innerHTML = `
+                        <h3>${contentDataTranslated.healthcare.title}</h3>
+                        <p style="margin-bottom: 20px;">${contentDataTranslated.healthcare.intro}</p>
+                        <ul style="list-style: none; padding: 0;">
+                            ${contentDataTranslated.healthcare.items.map(item => `
+                                <li style="padding: 15px 0; border-bottom: 1px solid rgba(56, 189, 248, 0.2);">
+                                    <strong>${item.title}:</strong> ${item.desc}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `;
+                }
+            }
+        }
+
+        // Toggle language on button click
+        langToggle.addEventListener('click', () => {
+            const newLang = currentLanguage === 'id' ? 'en' : 'id';
+            applyLanguage(newLang);
+        });
+
+        // Initialize language on page load
+        initLanguage();
 
         // Data tabs
         const dataTabs = document.querySelectorAll('.data-tab');
