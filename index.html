@@ -18,6 +18,7 @@
             width: 100%;
             height: 100%;
             overflow-x: hidden;
+            overflow-y: scroll;
         }
 
         :root {
@@ -75,6 +76,7 @@
             background-color: var(--bg);
             color: var(--text);
             overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
             width: 100%;
             max-width: 100%;
@@ -91,7 +93,7 @@
 
         /* Text shadow for better visibility over 3D model */
         h1, h2, h3, .hero-description, .section-description {
-            text-shadow: 0 2px 10px rgba(239, 208, 208, 0.8);
+            text-shadow: 0 1px 4px rgba(239, 208, 208, 0.5);
         }
 
         #model-canvas {
@@ -115,10 +117,10 @@
             padding: 16px 40px;
             z-index: 1000;
             background: var(--nav-bg);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(15px);
             border-radius: 60px;
             border: 1px solid var(--nav-border);
-            box-shadow: 0 8px 32px rgba(14, 165, 233, 0.08);
+            box-shadow: 0 4px 16px rgba(14, 165, 233, 0.04);
             width: calc(100% - 100px);
             max-width: 1200px;
             transition: all 0.3s ease;
@@ -126,9 +128,9 @@
         }
 
         nav.scrolled {
-            backdrop-filter: blur(30px);
+            backdrop-filter: blur(20px);
             background: var(--nav-bg-solid);
-            box-shadow: 0 12px 48px rgba(14, 165, 233, 0.12);
+            box-shadow: 0 6px 24px rgba(14, 165, 233, 0.08);
         }
 
         .logo {
@@ -157,7 +159,7 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-
+        
         .nav-menu {
             display: flex;
             gap: 5px;
@@ -256,15 +258,15 @@
             border-radius: 15px;
             padding: 10px 0;
             min-width: 200px;
-            box-shadow: 0 8px 32px rgba(14, 165, 233, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(14, 165, 233, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
             border: 1px solid rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .nav-dropdown-menu::before {
@@ -304,16 +306,16 @@
         /* Dark theme dropdown */
         .dark .nav-dropdown-menu {
             background: rgba(7, 17, 36, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(34, 211, 238, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(34, 211, 238, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(34, 211, 238, 0.1);
         }
 
         .dark .nav-dropdown-menu::before {
             background: rgba(7, 17, 36, 0.3);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .dark .nav-dropdown-menu a {
@@ -928,12 +930,12 @@
 
         /* Scroll snap container */
         body {
-            scroll-snap-type: y proximity;
+            scroll-snap-type: none;
         }
 
         .collision-section.locked {
-            scroll-snap-align: center;
-            scroll-snap-stop: always;
+            /* scroll-snap disabled for smooth scrolling */
+            pointer-events: auto;
         }
 
         .collision-animation {
@@ -1004,9 +1006,9 @@
 
         /* Performance Section Styles */
         #performance {
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(34, 211, 238, 0.15) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(14, 165, 233, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-top: 1px solid rgba(56, 189, 248, 0.2);
             border-bottom: 1px solid rgba(56, 189, 248, 0.2);
         }
@@ -1092,38 +1094,26 @@
             height: 100%;
             border-radius: 14px;
             width: 0%;
-            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: width 0.8s ease-out;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
         }
 
         .bar-fill.intellichain {
-            background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 100%);
+            background: #38bdf8;
         }
 
         .bar-fill.chatgpt {
-            background: linear-gradient(90deg, #10a37f 0%, #0d8368 100%);
+            background: #10a37f;
         }
 
         .bar-fill.gemini {
-            background: linear-gradient(90deg, #4285f4 0%, #1f71b8 100%);
+            background: #4285f4;
         }
 
         .bar-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            display: none;
         }
 
         .bar-value {
@@ -1131,16 +1121,15 @@
             font-weight: 800;
             color: #ffffff;
             text-align: center;
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            background: #0284c7;
             padding: 4px 8px;
             border-radius: 6px;
-            border: 2px solid #0ea5e9;
+            border: 1px solid #0ea5e9;
             display: flex;
             align-items: center;
             justify-content: center;
             min-width: 50px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 12px rgba(14, 165, 233, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 6px rgba(14, 165, 233, 0.4);
         }
 
         @keyframes slideInMetric {
@@ -3311,11 +3300,17 @@
 
         // Observe all sections
         const sections = document.querySelectorAll('.section');
-        sections.forEach(section => observer.observe(section));
+        sections.forEach(section => {
+            observer.observe(section);
+            // Mark as visible on load to ensure full page renders
+            section.classList.add('visible');
+        });
 
         // Observe footer
         const footer = document.querySelector('footer');
         observer.observe(footer);
+        // Mark footer as visible on load
+        footer.classList.add('visible');
 
         // Performance chart animation with bar charts
         let performanceAnimated = false;
@@ -3628,6 +3623,39 @@
                 'resource-title': 'Resource Optimization',
                 'resource-desc': 'Predictive models help hospitals manage staff, equipment, and bed allocation more efficiently',
 
+                // Climate tab
+                'climate-title': 'Climate Change Solutions',
+                'weather-title': 'Weather Prediction',
+                'weather-desc': 'Advanced AI models provide more accurate weather forecasts and early warning systems for natural disasters',
+                'energy-title': 'Energy Optimization',
+                'energy-desc': 'Smart grids use AI to balance renewable energy sources and reduce carbon emissions efficiently',
+                'deforestation-title': 'Deforestation Monitoring',
+                'deforestation-desc': 'Satellite imagery analysis helps track and prevent illegal logging in real-time across vast forest areas',
+                'carbon-title': 'Carbon Capture',
+                'carbon-desc': 'AI optimizes carbon capture technologies and identifies the most effective locations for implementation',
+
+                // Education tab
+                'education-title': 'Education Solutions',
+                'learning-title': 'Personalized Learning',
+                'learning-desc': 'Adaptive learning systems adjust content difficulty and pace based on individual student performance and learning style',
+                'grading-title': 'Automated Grading',
+                'grading-desc': 'AI assists teachers by grading assignments and providing detailed feedback, freeing time for personalized instruction',
+                'accessibility-tools-title': 'Accessibility Tools',
+                'accessibility-tools-desc': 'Speech recognition, translation, and text-to-speech technologies make education accessible to students with disabilities',
+                'dropout-title': 'Dropout Prevention',
+                'dropout-desc': 'Predictive analytics identify at-risk students early, enabling timely intervention and support',
+
+                // Business tab
+                'business-solutions-title': 'Business Solutions',
+                'insights-title': 'Customer Insights',
+                'insights-desc': 'Analyze customer behavior patterns to predict needs, improve satisfaction, and increase retention rates',
+                'supply-title': 'Supply Chain Optimization',
+                'supply-desc': 'AI predicts demand, optimizes inventory levels, and identifies potential disruptions before they occur',
+                'fraud-title': 'Fraud Detection',
+                'fraud-desc': 'Machine learning identifies suspicious transactions and patterns in real-time, protecting businesses and customers',
+                'process-title': 'Process Automation',
+                'process-desc': 'Robotic process automation handles repetitive tasks, reducing costs and allowing employees to focus on strategic work',
+
                 // CTA Section
                 'cta-title': 'Ready to Solve Problems with AI?',
                 'cta-desc': 'Join thousands of professionals leveraging AI to tackle their biggest challenges',
@@ -3870,6 +3898,39 @@
                 'treatment-desc': 'AI menganalisis data pasien untuk merekomendasikan rencana perawatan khusus berdasarkan profil genetik individu dan riwayat medis',
                 'resource-title': 'Optimasi Sumber Daya',
                 'resource-desc': 'Model prediktif membantu rumah sakit mengelola staf, peralatan, dan alokasi tempat tidur lebih efisien',
+
+                // Climate tab
+                'climate-title': 'Solusi Perubahan Iklim',
+                'weather-title': 'Prediksi Cuaca',
+                'weather-desc': 'Model AI canggih memberikan prakiraan cuaca yang lebih akurat dan sistem peringatan dini untuk bencana alam',
+                'energy-title': 'Optimasi Energi',
+                'energy-desc': 'Jaringan pintar menggunakan AI untuk menyeimbangkan sumber energi terbarukan dan mengurangi emisi karbon secara efisien',
+                'deforestation-title': 'Pemantauan Deforestasi',
+                'deforestation-desc': 'Analisis citra satelit membantu melacak dan mencegah penebangan ilegal secara real-time di area hutan yang luas',
+                'carbon-title': 'Penangkapan Karbon',
+                'carbon-desc': 'AI mengoptimalkan teknologi penangkapan karbon dan mengidentifikasi lokasi yang paling efektif untuk implementasi',
+
+                // Education tab
+                'education-title': 'Solusi Pendidikan',
+                'learning-title': 'Pembelajaran yang Dipersonalisasi',
+                'learning-desc': 'Sistem pembelajaran adaptif menyesuaikan tingkat kesulitan konten dan kecepatan berdasarkan performa siswa individu',
+                'grading-title': 'Penilaian Otomatis',
+                'grading-desc': 'AI membantu guru dengan menilai tugas dan memberikan umpan balik terperinci, membebaskan waktu untuk instruksi yang dipersonalisasi',
+                'accessibility-tools-title': 'Alat Aksesibilitas',
+                'accessibility-tools-desc': 'Teknologi pengenalan suara, terjemahan, dan text-to-speech membuat pendidikan dapat diakses oleh siswa penyandang disabilitas',
+                'dropout-title': 'Pencegahan Putus Sekolah',
+                'dropout-desc': 'Analitik prediktif mengidentifikasi siswa yang berisiko lebih awal, memungkinkan intervensi dan dukungan yang tepat waktu',
+
+                // Business tab
+                'business-solutions-title': 'Solusi Bisnis',
+                'insights-title': 'Wawasan Pelanggan',
+                'insights-desc': 'Analisis pola perilaku pelanggan untuk memprediksi kebutuhan, meningkatkan kepuasan, dan meningkatkan tingkat retensi',
+                'supply-title': 'Optimasi Rantai Pasokan',
+                'supply-desc': 'AI memprediksi permintaan, mengoptimalkan tingkat inventaris, dan mengidentifikasi potensi gangguan sebelum terjadi',
+                'fraud-title': 'Deteksi Penipuan',
+                'fraud-desc': 'Machine learning mengidentifikasi transaksi dan pola mencurigakan secara real-time, melindungi bisnis dan pelanggan',
+                'process-title': 'Otomasi Proses',
+                'process-desc': 'Otomasi proses robotik menangani tugas-tugas berulang, mengurangi biaya dan memungkinkan karyawan fokus pada pekerjaan strategis',
 
                 // CTA Section
                 'cta-title': 'Siap Memecahkan Masalah dengan AI?',
@@ -4120,25 +4181,92 @@
                             desc: translations[lang]['resource-desc']
                         }
                     ]
+                },
+                climate: {
+                    title: translations[lang]['climate-title'] || 'Climate Change Solutions',
+                    items: [
+                        { 
+                            title: translations[lang]['weather-title'] || 'Weather Prediction', 
+                            desc: translations[lang]['weather-desc'] || 'Advanced AI models provide more accurate weather forecasts'
+                        },
+                        { 
+                            title: translations[lang]['energy-title'] || 'Energy Optimization', 
+                            desc: translations[lang]['energy-desc'] || 'Smart grids use AI to balance renewable energy sources'
+                        },
+                        { 
+                            title: translations[lang]['deforestation-title'] || 'Deforestation Monitoring', 
+                            desc: translations[lang]['deforestation-desc'] || 'Satellite imagery analysis helps track illegal logging'
+                        },
+                        { 
+                            title: translations[lang]['carbon-title'] || 'Carbon Capture', 
+                            desc: translations[lang]['carbon-desc'] || 'AI optimizes carbon capture technologies'
+                        }
+                    ]
+                },
+                education: {
+                    title: translations[lang]['education-title'] || 'Education Solutions',
+                    items: [
+                        { 
+                            title: translations[lang]['learning-title'] || 'Personalized Learning', 
+                            desc: translations[lang]['learning-desc'] || 'Adaptive learning systems adjust content difficulty'
+                        },
+                        { 
+                            title: translations[lang]['grading-title'] || 'Automated Grading', 
+                            desc: translations[lang]['grading-desc'] || 'AI assists teachers by grading assignments'
+                        },
+                        { 
+                            title: translations[lang]['accessibility-tools-title'] || 'Accessibility Tools', 
+                            desc: translations[lang]['accessibility-tools-desc'] || 'Speech recognition and translation tools'
+                        },
+                        { 
+                            title: translations[lang]['dropout-title'] || 'Dropout Prevention', 
+                            desc: translations[lang]['dropout-desc'] || 'Predictive analytics identify at-risk students'
+                        }
+                    ]
+                },
+                business: {
+                    title: translations[lang]['business-title'] || 'Business Solutions',
+                    items: [
+                        { 
+                            title: translations[lang]['insights-title'] || 'Customer Insights', 
+                            desc: translations[lang]['insights-desc'] || 'Analyze customer behavior patterns'
+                        },
+                        { 
+                            title: translations[lang]['supply-title'] || 'Supply Chain Optimization', 
+                            desc: translations[lang]['supply-desc'] || 'AI predicts demand and optimizes inventory'
+                        },
+                        { 
+                            title: translations[lang]['fraud-title'] || 'Fraud Detection', 
+                            desc: translations[lang]['fraud-desc'] || 'Machine learning identifies suspicious transactions'
+                        },
+                        { 
+                            title: translations[lang]['process-title'] || 'Process Automation', 
+                            desc: translations[lang]['process-desc'] || 'Robotic process automation handles repetitive tasks'
+                        }
+                    ]
                 }
             };
             
-            // If first tab is active, update its content
+            // Update active tab content
             const activeTab = document.querySelector('.data-tab.active');
-            if (activeTab && activeTab.getAttribute('data-content') === 'healthcare') {
-                const dataContent = document.getElementById('data-content');
-                if (dataContent) {
-                    dataContent.innerHTML = `
-                        <h3>${contentDataTranslated.healthcare.title}</h3>
-                        <p style="margin-bottom: 20px;">${contentDataTranslated.healthcare.intro}</p>
-                        <ul style="list-style: none; padding: 0;">
-                            ${contentDataTranslated.healthcare.items.map(item => `
-                                <li style="padding: 15px 0; border-bottom: 1px solid rgba(56, 189, 248, 0.2);">
-                                    <strong>${item.title}:</strong> ${item.desc}
-                                </li>
-                            `).join('')}
-                        </ul>
-                    `;
+            if (activeTab) {
+                const tabType = activeTab.getAttribute('data-content');
+                const tabData = contentDataTranslated[tabType];
+                if (tabData) {
+                    const dataContent = document.getElementById('data-content');
+                    if (dataContent) {
+                        dataContent.innerHTML = `
+                            <h3>${tabData.title}</h3>
+                            ${tabData.intro ? `<p style="margin-bottom: 20px;">${tabData.intro}</p>` : ''}
+                            <ul style="list-style: none; padding: 0;">
+                                ${tabData.items.map(item => `
+                                    <li style="padding: 15px 0; border-bottom: 1px solid rgba(56, 189, 248, 0.2);">
+                                        <strong>${item.title}:</strong> ${item.desc}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        `;
+                    }
                 }
             }
         }
@@ -4200,18 +4328,8 @@
                 dataTabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 
-                const content = contentData[tab.dataset.content];
-                dataContent.innerHTML = `
-                    <h3>${content.title}</h3>
-                    <p style="margin-bottom: 20px;">AI is transforming this field:</p>
-                    <ul style="list-style: none; padding: 0;">
-                        ${content.items.map((item, i) => `
-                            <li style="padding: 15px 0; border-bottom: ${i < content.items.length - 1 ? '1px solid rgba(56, 189, 248, 0.2)' : 'none'};">
-                                <strong>${item.title}:</strong> ${item.desc}
-                            </li>
-                        `).join('')}
-                    </ul>
-                `;
+                // Use updateDataContent to respect current language
+                updateDataContent(currentLanguage);
             });
         });
 
