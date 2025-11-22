@@ -164,9 +164,7 @@
             color: var(--accent);
         }
 
-        .password-toggle {
-            display: none;
-        }
+
 
         /* Language toggle button */
         .lang-toggle {
@@ -319,28 +317,7 @@
             position: relative;
         }
 
-        .password-toggle {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--muted);
-            cursor: pointer;
-            font-size: 18px;
-            transition: color 0.3s;
-            padding: 0;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .password-toggle:hover {
-            color: var(--accent);
-        }
+ 
 
         /* Checkbox for remember me */
         .remember-forgot {
@@ -746,7 +723,6 @@
         const loginForm = document.getElementById('loginForm');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
-        const passwordToggle = document.getElementById('passwordToggle');
         const loginBtn = document.getElementById('loginBtn');
         const rememberMe = document.getElementById('rememberMe');
         const errorMessage = document.getElementById('errorMessage');
@@ -755,12 +731,7 @@
         const githubBtn = document.getElementById('githubBtn');
 
         // Password visibility toggle
-        passwordToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            const isPassword = passwordInput.type === 'password';
-            passwordInput.type = isPassword ? 'text' : 'password';
-            passwordToggle.textContent = isPassword ? '🙈' : '👁️';
-        });
+        
 
         // Show/hide error message
         function showError(message) {
