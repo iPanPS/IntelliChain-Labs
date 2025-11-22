@@ -117,7 +117,8 @@
             padding: 16px 40px;
             z-index: 1000;
             background: var(--nav-bg);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 60px;
             border: 1px solid var(--nav-border);
             box-shadow: 0 4px 16px rgba(14, 165, 233, 0.04);
@@ -129,7 +130,10 @@
 
         nav.scrolled {
             backdrop-filter: blur(20px);
-            background: var(--nav-bg-solid);
+            -webkit-backdrop-filter: blur(20px);
+            /* keep the translucent/nav-top look while scrolling */
+            background: var(--nav-bg);
+            border: 1px solid var(--nav-border);
             box-shadow: 0 6px 24px rgba(14, 165, 233, 0.08);
         }
 
@@ -825,6 +829,9 @@
             animation: fadeInUp 0.6s ease-out 2.0s forwards;
         }
 
+        /* Professional Scroll Animations */
+
+        /* Fade in up animation */
         @keyframes fadeInUp {
             0% {
                 opacity: 0;
@@ -836,17 +843,133 @@
             }
         }
 
+        /* Fade in down animation */
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Slide from left */
+        @keyframes slideInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Slide from right */
+        @keyframes slideInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Scale in animation */
+        @keyframes scaleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Rotate in animation */
+        @keyframes rotateIn {
+            0% {
+                opacity: 0;
+                transform: rotate(-5deg) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+
+        /* Section fade in down animation */
+        @keyframes sectionFadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stagger slide in */
+        @keyframes staggerSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Professional section styling */
+        .section-subtitle {
+            animation: sectionFadeInDown 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .section.visible .section-subtitle {
+            animation: sectionFadeInDown 0.6s ease-out forwards;
+        }
+
+        .section.visible .section-title {
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+        }
+
+        .section.visible .section-description {
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+        }
+
+        .section-subtitle {
+            animation-delay: 0s;
+        }
+
+        .section-title {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .section-description {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
         /* Button animation */
         .cta-button {
             opacity: 0;
             animation: fadeInUp 0.6s ease-out 1.8s forwards;
         }
 
-        /* Section scroll animations */
+        /* Section scroll animations with professional easing */
         .section {
             opacity: 0;
             transform: translateY(50px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .section.visible {
@@ -854,18 +977,31 @@
             transform: translateY(0);
         }
 
-        .stack-item, .grid-item {
+        /* Stack items with staggered animations */
+        .stack-item {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(40px);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .section.visible .stack-item,
-        .section.visible .grid-item {
+        .section.visible .stack-item {
             opacity: 1;
             transform: translateY(0);
         }
 
+        /* Grid items with staggered animations */
+        .grid-item {
+            opacity: 0;
+            transform: scale(0.95) translateY(30px);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .section.visible .grid-item {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Stagger delays for better visual flow */
         .section.visible .stack-item:nth-child(1) { transition-delay: 0.1s; }
         .section.visible .stack-item:nth-child(2) { transition-delay: 0.2s; }
         .section.visible .stack-item:nth-child(3) { transition-delay: 0.3s; }
@@ -877,6 +1013,38 @@
         .section.visible .grid-item:nth-child(4) { transition-delay: 0.4s; }
         .section.visible .grid-item:nth-child(5) { transition-delay: 0.5s; }
         .section.visible .grid-item:nth-child(6) { transition-delay: 0.6s; }
+
+        /* Performance section special animations */
+        .section#performance .section-visible .perf-card {
+            animation: slideInLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .perf-card {
+            opacity: 0;
+            animation: slideInRight 0.8s ease-out forwards;
+            transform-origin: center;
+        }
+
+        .perf-card:nth-child(1) { animation-delay: 0.1s; }
+        .perf-card:nth-child(2) { animation-delay: 0.2s; }
+        .perf-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Use cases section animation */
+        .use-case-item {
+            opacity: 0;
+            transform: translateY(30px) rotateX(10deg);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .section.visible .use-case-item {
+            opacity: 1;
+            transform: translateY(0) rotateX(0);
+        }
+
+        .use-case-item:nth-child(1) { transition-delay: 0.1s; }
+        .use-case-item:nth-child(2) { transition-delay: 0.2s; }
+        .use-case-item:nth-child(3) { transition-delay: 0.3s; }
+        .use-case-item:nth-child(4) { transition-delay: 0.4s; }
 
         .section-header {
             opacity: 0;
@@ -890,14 +1058,15 @@
         }
 
         /* Data layout animation */
+        /* Data layout animation with professional easing */
         .data-sidebar, .data-content {
             opacity: 0;
-            transform: translateX(-30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-40px);
+            transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .data-content {
-            transform: translateX(30px);
+            transform: translateX(40px);
         }
 
         .section.visible .data-sidebar,
@@ -913,7 +1082,7 @@
         footer {
             opacity: 0;
             transform: translateY(50px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         footer.visible {
@@ -1290,21 +1459,21 @@
         }
 
         .perf-card-title {
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 700;
             color: var(--text);
             margin-bottom: 10px;
         }
 
         .perf-card-desc {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--muted);
             line-height: 1.6;
             margin-bottom: 12px;
         }
 
         .perf-card-stat {
-            font-size: 20px;
+            font-size: 36px;
             font-weight: 700;
             color: var(--accent);
         }
@@ -1388,6 +1557,13 @@
         }
 
         @media (max-width: 480px) {
+                /* Ensure CTA text and button are fully visible after animation on mobile */
+                .hero-description,
+                .cta-button {
+                    opacity: 1 !important;
+                    transition: none !important;
+                    animation: none !important;
+                }
             .performance-container {
                 gap: 20px;
                 padding: 0 15px;
@@ -1450,12 +1626,124 @@
             border-bottom: 1px solid rgba(56, 189, 248, 0.2);
         }
 
-        .testimonials-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+        /* Testimonials carousel wrapper */
+        .testimonials-wrapper {
+            position: relative;
             max-width: 1400px;
             margin: 0 auto;
+            padding-bottom: 80px;
+            width: 100%;
+        }
+
+        .testimonials-container {
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            gap: 30px;
+            scroll-behavior: smooth;
+            padding: 20px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Hide native scrollbars while keeping scrollable area */
+        .testimonials-container::-webkit-scrollbar {
+            height: 0;
+            background: transparent;
+        }
+        .testimonials-container { scrollbar-width: none; -ms-overflow-style: none; }
+
+        /* Carousel animation */
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutToLeft {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+        }
+
+        /* Carousel navigation buttons */
+        .carousel-nav {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            z-index: 10;
+        }
+
+        .carousel-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .carousel-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .carousel-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Carousel indicators */
+        .carousel-indicators {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(56, 189, 248, 0.5);
+        }
+
+        .carousel-indicator.active {
+            background: var(--accent);
+            width: 24px;
+            border-radius: 5px;
+            border-color: var(--accent);
+        }
+
+        .carousel-indicator:hover {
+            background: var(--accent);
+            opacity: 0.8;
         }
 
         .testimonial-card {
@@ -1467,19 +1755,13 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            opacity: 0;
-            animation: fadeInUp 0.6s ease-out forwards;
             display: flex;
             flex-direction: column;
             gap: 16px;
+            flex: 0 0 calc(33.333% - 20px);
+            min-height: 320px;
         }
 
-        .testimonial-card:nth-child(1) { animation-delay: 0.1s; }
-        .testimonial-card:nth-child(2) { animation-delay: 0.2s; }
-        .testimonial-card:nth-child(3) { animation-delay: 0.3s; }
-        .testimonial-card:nth-child(4) { animation-delay: 0.4s; }
-        .testimonial-card:nth-child(5) { animation-delay: 0.5s; }
-        .testimonial-card:nth-child(6) { animation-delay: 0.6s; }
 
         .testimonial-card::before {
             content: '';
@@ -1497,7 +1779,7 @@
         }
 
         .testimonial-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-4px);
             box-shadow: 0 20px 60px rgba(14, 165, 233, 0.2);
             border-color: rgba(56, 189, 248, 0.5);
         }
@@ -1516,8 +1798,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, rgba(56, 189, 248, 0.3) 0%, rgba(34, 211, 238, 0.3) 100%);
             border-radius: 50%;
             border: 2px solid rgba(56, 189, 248, 0.4);
@@ -1528,14 +1810,14 @@
         }
 
         .testimonial-name {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--text);
             margin-bottom: 4px;
         }
 
         .testimonial-role {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--muted);
             line-height: 1.4;
         }
@@ -1547,13 +1829,58 @@
         }
 
         .testimonial-text {
-            font-size: 14px;
+            font-size: 15px;
             line-height: 1.8;
             color: var(--muted);
             position: relative;
             z-index: 1;
             font-style: italic;
         }
+
+        /* Bigger, more legible typography for testimonials & performance */
+        #testimonials .testimonial-card {
+            padding: 36px;
+            min-height: 380px;
+        }
+
+        #testimonials .testimonial-avatar {
+            width: 100px;
+            height: 100px;
+            font-size: 56px;
+        }
+
+        #testimonials .testimonial-name {
+            font-size: 22px;
+        }
+
+        #testimonials .testimonial-role {
+            font-size: 16px;
+        }
+
+        #testimonials .testimonial-text {
+            font-size: 18px;
+            line-height: 1.95;
+        }
+
+        /* Performance section — larger labels and values */
+        #performance .chart-title {
+            font-size: 32px;
+        }
+
+        #performance .metric-label {
+            font-size: 16px;
+        }
+
+        #performance .model-name {
+            font-size: 16px;
+        }
+
+        #performance .bar-value {
+            font-size: 16px;
+            padding: 6px 10px;
+            min-width: 60px;
+        }
+
 
         .dark .testimonial-card {
             background: rgba(34, 211, 238, 0.05);
@@ -1790,6 +2117,197 @@
             }
         }
 
+
+        /* Marquee-based continuous testimonials */
+        .testimonials-marquee {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: visible;
+            padding: 12px 0 80px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .marquee-track {
+            display: flex;
+            align-items: stretch;
+            gap: 24px;
+            animation: marquee 90s linear infinite;
+            will-change: transform;
+            scroll-behavior: smooth;
+            padding: 0;
+            min-width: min-content;
+            animation-play-state: paused; /* Start paused until JS clones cards */
+        }
+        
+        .marquee-track.ready {
+            animation-play-state: running; /* Resume after cloning */
+        }
+
+        /* Hide scrollbars */
+        .testimonials-marquee::-webkit-scrollbar {
+            height: 0;
+            background: transparent;
+        }
+        .testimonials-marquee {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        .marquee-track .testimonial-card {
+            flex: 0 0 320px;
+            max-width: 320px;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-4080px); } /* 12 cards × 320px + 11 gaps × 24px = 4080px */
+        }
+
+        @media (max-width: 900px) {
+            .marquee-track .testimonial-card { flex: 0 0 260px; max-width: 260px; }
+            .marquee-track { gap: 16px; animation-duration: 80s; }
+            @keyframes marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-3296px); } /* 12 cards × 260px + 11 gaps × 16px = 3296px */
+            }
+        }
+
+        @media (max-width: 520px) {
+            .marquee-track .testimonial-card { flex: 0 0 170px; max-width: 170px; }
+            .marquee-track { gap: 10px; animation-duration: 60s; }
+            @keyframes marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-2210px); } /* 12 cards × 170px + 11 gaps × 10px = 2210px */
+            }
+        }
+
+        /* FIX – Small testimonial cards on mobile */
+@media (max-width: 480px) {
+    .testimonials-container {
+        gap: 14px !important;
+        grid-template-columns: 1fr !important;
+    }
+
+    .testimonial-card {
+        padding: 16px 14px !important;
+        border-radius: 14px !important;
+        gap: 10px !important;
+    }
+
+    .testimonial-avatar {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 28px !important;
+    }
+
+    .testimonial-name {
+        font-size: 14px !important;
+    }
+
+    .testimonial-role {
+        font-size: 11px !important;
+    }
+
+    .testimonial-text {
+        font-size: 12px !important;
+        line-height: 1.5 !important;
+    }
+
+    .testimonial-rating {
+        font-size: 13px !important;
+    }
+}
+
+/* Even smaller (very small phones like iPhone SE) */
+@media (max-width: 360px) {
+    .testimonial-card {
+        padding: 12px 10px !important;
+        border-radius: 12px !important;
+    }
+
+    .testimonial-avatar {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 24px !important;
+    }
+
+    .testimonial-text {
+        font-size: 11px !important;
+    }
+}
+
+
+        /* Testimonial indicators */
+        .testimonial-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            z-index: 10;
+        }
+
+        .testimonial-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-indicator:hover {
+            background: rgba(56, 189, 248, 0.6);
+            transform: scale(1.2);
+        }
+
+        .testimonial-indicator.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            width: 24px;
+            border-radius: 5px;
+        }
+
+        /* Section scroll animation - animate child elements only */
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section .section-header,
+        .section .section-content > div,
+        .section .grid-layout,
+        .section .stack-layout,
+        .section .data-tabs,
+        .section #data-content {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .section.in-view .section-header,
+        .section.in-view .section-content > div,
+        .section.in-view .grid-layout,
+        .section.in-view .stack-layout,
+        .section.in-view .data-tabs,
+        .section.in-view #data-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         footer {
             background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
@@ -2261,8 +2779,8 @@
             }
 
             .hero {
-                padding: 80px 12px 50px;
-                min-height: 70vh;
+                padding: 120px 12px 80px;
+                min-height: 100vh;
             }
 
             .section-content {
@@ -2767,7 +3285,9 @@
                     <h2 class="section-title" data-i18n="testimonials-title">What Our Clients Say</h2>
                     <p class="section-description" data-i18n="testimonials-desc">Discover how organizations worldwide are transforming their operations with IntelliChain AI</p>
                 </div>
-                <div class="testimonials-container">
+                <div class="testimonials-wrapper">
+                    <div class="testimonials-marquee" aria-hidden="false">
+                        <div class="marquee-track">
                     <div class="testimonial-card">
                         <div class="testimonial-header">
                             <div class="testimonial-avatar">👨‍⚕️</div>
@@ -2839,6 +3359,83 @@
                         <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
                         <p class="testimonial-text" data-i18n="testimonial-6-text">The personalized learning recommendations have improved student engagement by 52% and graduation rates by 18%. IntelliChain truly understands adaptive education.</p>
                     </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👨</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-7-name">Michael Torres</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-7-role">VP Finance, Nexus Capital</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-7-text">Portfolio optimization using IntelliChain's AI has delivered 24% better returns. The risk assessment capabilities are unmatched in the industry. Highly recommended for any financial organization.</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👩‍🔧</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-8-name">Elena Rodriguez</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-8-role">Director of Engineering, AutoTech Industries</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-8-text">Predictive maintenance implementation reduced unexpected downtime by 67%. The system learns patterns better than our entire engineering team. A game-changer for manufacturing.</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👨‍⚖️</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-9-name">David Chen</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-9-role">Partner, Justice Legal Solutions</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-9-text">Document review time decreased from weeks to hours. IntelliChain's legal AI has helped us win more cases with thorough research. Investment has paid for itself 10x over.</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👩</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-10-name">Dr. Sophia Patel</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-10-role">Hospital Administrator, City Medical Center</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-10-text">Patient care quality improved significantly with AI-assisted diagnostics. Our doctors now have confidence in a second opinion from IntelliChain. Reduced medical errors by 43%.</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👨‍🌾</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-11-name">James Patterson</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-11-role">CEO, Green Harvest Agriculture</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-11-text">Crop yield predictions are now 95% accurate. IntelliChain's weather and soil analysis has revolutionized our farming operations. We're growing more with fewer resources.</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">👩‍💻</div>
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name" data-i18n="testimonial-12-name">Amanda Foster</h3>
+                                <p class="testimonial-role" data-i18n="testimonial-12-role">CTO, Cloud Dynamics</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text" data-i18n="testimonial-12-text">Infrastructure optimization cut our cloud costs by 38%. The system automatically scales resources perfectly. Best investment in our tech stack this year.</p>
+                    </div>
+
+                    </div>
+                    </div>
+                    <!-- Indicators -->
+                    <div class="testimonial-indicators" id="testimonialIndicators"></div>
                 </div>
             </div>
         </section>
@@ -3035,6 +3632,31 @@
     </footer>
 
     <script>
+        // End CTA animation when centered on mobile
+        if (window.innerWidth <= 480) {
+            document.addEventListener('DOMContentLoaded', function() {
+                var ctaSection = document.querySelector('.hero');
+                var ctaText = document.querySelector('.hero-description');
+                var ctaBtn = document.querySelector('.cta-button');
+                function checkCTAReveal() {
+                    if (!ctaSection || !ctaText || !ctaBtn) return;
+                    var rect = ctaSection.getBoundingClientRect();
+                    var viewportHeight = window.innerHeight;
+                    // Trigger when bottom of hero is near vertical center (60% of viewport)
+                    if (rect.bottom > viewportHeight * 0.55 && rect.top < viewportHeight * 0.85) {
+                        ctaText.style.opacity = '1';
+                        ctaBtn.style.opacity = '1';
+                        ctaText.style.transition = 'none';
+                        ctaBtn.style.transition = 'none';
+                        ctaText.style.animation = 'none';
+                        ctaBtn.style.animation = 'none';
+                    }
+                }
+                window.addEventListener('scroll', checkCTAReveal);
+                window.addEventListener('resize', checkCTAReveal);
+                checkCTAReveal();
+            });
+        }
         // Three.js Setup
         const canvas = document.getElementById('model-canvas');
         const scene = new THREE.Scene();
@@ -3302,6 +3924,22 @@
         // Mark footer as visible on load
         footer.classList.add('visible');
 
+        // Add scroll animation to section content (not the section itself - preserves blur)
+        const contentAnimationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    // Stop observing after animation triggers
+                    contentAnimationObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        // Observe each section for content animation
+        sections.forEach(section => {
+            contentAnimationObserver.observe(section);
+        });
+
         // Performance chart animation with bar charts
         let performanceAnimated = false;
         const performanceSection = document.getElementById('performance');
@@ -3338,6 +3976,56 @@
             }, { threshold: 0.2 });
 
             testimonialsObserver.observe(testimonialsSection);
+        }
+
+        // Initialize marquee carousel - duplicate cards for seamless loop
+        function initCarousel() {
+            const marqueeTrack = document.querySelector('.marquee-track');
+            const indicatorsContainer = document.getElementById('testimonialIndicators');
+            if (!marqueeTrack || !indicatorsContainer) return;
+
+            // Get original cards before cloning
+            const cards = Array.from(marqueeTrack.querySelectorAll('.testimonial-card'));
+            const cardCount = cards.length;
+
+            // Clone all cards and append to create seamless loop
+            cards.forEach(card => {
+                const clone = card.cloneNode(true);
+                marqueeTrack.appendChild(clone);
+            });
+            
+            // Mark track as ready and start animation
+            marqueeTrack.classList.add('ready');
+
+            // Create only a few indicators (5 dots)
+            const dotCount = 5;
+            let currentDotIndex = 0;
+            
+            const buttons = [];
+            for (let i = 0; i < dotCount; i++) {
+                const indicator = document.createElement('button');
+                indicator.className = 'testimonial-indicator';
+                if (i === 0) indicator.classList.add('active');
+                indicator.setAttribute('aria-label', `Testimonial group ${i + 1}`);
+                indicatorsContainer.appendChild(indicator);
+                buttons.push(indicator);
+            }
+
+            // Update dots every 18 seconds (90s / 5 dots)
+            setInterval(() => {
+                // Remove active from all
+                buttons.forEach(btn => btn.classList.remove('active'));
+                // Add active to current
+                buttons[currentDotIndex].classList.add('active');
+                // Move to next
+                currentDotIndex = (currentDotIndex + 1) % dotCount;
+            }, 18000);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCarousel);
+        } else {
+            initCarousel();
         }
 
         // Use Cases section animations
@@ -3800,6 +4488,24 @@
                 'testimonial-6-name': 'Dr. Lisa Anderson',
                 'testimonial-6-role': 'Head of EdTech, Global Education Foundation',
                 'testimonial-6-text': 'The personalized learning recommendations have improved student engagement by 52% and graduation rates by 18%. IntelliChain truly understands adaptive education.',
+                'testimonial-7-name': 'Michael Torres',
+                'testimonial-7-role': 'VP Finance, Nexus Capital',
+                'testimonial-7-text': 'Portfolio optimization using IntelliChain\'s AI has delivered 24% better returns. The risk assessment capabilities are unmatched in the industry. Highly recommended for any financial organization.',
+                'testimonial-8-name': 'Elena Rodriguez',
+                'testimonial-8-role': 'Director of Engineering, AutoTech Industries',
+                'testimonial-8-text': 'Predictive maintenance implementation reduced unexpected downtime by 67%. The system learns patterns better than our entire engineering team. A game-changer for manufacturing.',
+                'testimonial-9-name': 'David Chen',
+                'testimonial-9-role': 'Partner, Justice Legal Solutions',
+                'testimonial-9-text': 'Document review time decreased from weeks to hours. IntelliChain\'s legal AI has helped us win more cases with thorough research. Investment has paid for itself 10x over.',
+                'testimonial-10-name': 'Dr. Sophia Patel',
+                'testimonial-10-role': 'Hospital Administrator, City Medical Center',
+                'testimonial-10-text': 'Patient care quality improved significantly with AI-assisted diagnostics. Our doctors now have confidence in a second opinion from IntelliChain. Reduced medical errors by 43%.',
+                'testimonial-11-name': 'James Patterson',
+                'testimonial-11-role': 'CEO, Green Harvest Agriculture',
+                'testimonial-11-text': 'Crop yield predictions are now 95% accurate. IntelliChain\'s weather and soil analysis has revolutionized our farming operations. We\'re growing more with fewer resources.',
+                'testimonial-12-name': 'Amanda Foster',
+                'testimonial-12-role': 'CTO, Cloud Dynamics',
+                'testimonial-12-text': 'Infrastructure optimization cut our cloud costs by 38%. The system automatically scales resources perfectly. Best investment in our tech stack this year.',
 
                 // Use Cases Section
                 'usecases-subtitle': 'Industry Solutions',
@@ -3996,6 +4702,24 @@
                 'testimonial-6-name': 'Dr. Lisa Anderson',
                 'testimonial-6-role': 'Kepala EdTech, Global Education Foundation',
                 'testimonial-6-text': 'Rekomendasi pembelajaran yang dipersonalisasi telah meningkatkan keterlibatan siswa sebesar 52% dan tingkat kelulusan sebesar 18%. IntelliChain benar-benar memahami pendidikan adaptif.',
+                'testimonial-7-name': 'Michael Torres',
+                'testimonial-7-role': 'Wakil Presiden Keuangan, Nexus Capital',
+                'testimonial-7-text': 'Optimasi portofolio menggunakan AI IntelliChain menghasilkan pengembalian 24% lebih baik. Kemampuan penilaian risiko tak tertandingi di industri. Sangat direkomendasikan untuk organisasi finansial mana pun.',
+                'testimonial-8-name': 'Elena Rodriguez',
+                'testimonial-8-role': 'Direktur Teknik, AutoTech Industries',
+                'testimonial-8-text': 'Implementasi pemeliharaan prediktif mengurangi waktu henti tak terduga sebesar 67%. Sistem mempelajari pola lebih baik daripada seluruh tim teknik kami. Mengubah permainan bagi manufaktur.',
+                'testimonial-9-name': 'David Chen',
+                'testimonial-9-role': 'Mitra, Justice Legal Solutions',
+                'testimonial-9-text': 'Waktu penelaahan dokumen berkurang dari minggu menjadi jam. AI hukum IntelliChain telah membantu kami memenangkan lebih banyak kasus dengan riset yang menyeluruh. Investasi ini membayar dirinya 10x lipat.',
+                'testimonial-10-name': 'Dr. Sophia Patel',
+                'testimonial-10-role': 'Administrator Rumah Sakit, City Medical Center',
+                'testimonial-10-text': 'Kualitas perawatan pasien meningkat secara signifikan dengan diagnostik berbantuan AI. Dokter kami kini percaya pada opini kedua dari IntelliChain. Mengurangi kesalahan medis sebesar 43%.',
+                'testimonial-11-name': 'James Patterson',
+                'testimonial-11-role': 'CEO, Green Harvest Agriculture',
+                'testimonial-11-text': 'Prediksi hasil panen kini 95% akurat. Analisis cuaca dan tanah IntelliChain telah merevolusi operasi pertanian kami. Kami menanam lebih banyak dengan sumber daya yang lebih sedikit.',
+                'testimonial-12-name': 'Amanda Foster',
+                'testimonial-12-role': 'CTO, Cloud Dynamics',
+                'testimonial-12-text': 'Optimasi infrastruktur mengurangi biaya cloud kami sebesar 38%. Sistem menskalakan sumber daya secara otomatis dengan sempurna. Investasi terbaik dalam stack teknologi kami tahun ini.',
 
                 // Use Cases Section
                 'usecases-subtitle': 'Solusi Industri',

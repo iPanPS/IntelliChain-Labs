@@ -108,11 +108,22 @@
         .nav-logo {
             font-size: 24px;
             font-weight: 700;
-            color: var(--accent);
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 10px;
+            color: transparent;
+            background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dark .nav-logo {
+            background: linear-gradient(135deg, #22d3ee 0%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nav-logo img {
@@ -149,6 +160,29 @@
 
         .theme-toggle:hover {
             color: var(--accent);
+        }
+
+        /* Language toggle button */
+        .lang-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text);
+            border-radius: 20px;
+        }
+
+        .lang-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(14, 165, 233, 0.1);
+            transform: scale(1.05);
         }
 
         /* Main content */
@@ -675,6 +709,85 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Tablet & Mobile Navbar Improvements */
+        @media (max-width: 768px) {
+            nav {
+                padding: 12px 20px;
+                gap: 12px;
+            }
+
+            .nav-logo {
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .nav-logo img {
+                width: 24px;
+                height: 24px;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-links a,
+            .nav-links button {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+
+            .lang-toggle {
+                padding: 6px 10px;
+                font-size: 12px;
+                border: 1.5px solid var(--border);
+                font-weight: 600;
+            }
+        }
+
+        /* Mobile Phone Navbar */
+        @media (max-width: 480px) {
+            nav {
+                padding: 10px 16px;
+                flex-wrap: nowrap;
+                gap: 8px;
+            }
+
+            .nav-logo {
+                font-size: 12px;
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
+
+            .nav-logo img {
+                width: 20px;
+                height: 20px;
+            }
+
+            .nav-links {
+                gap: 6px;
+                flex-wrap: nowrap;
+            }
+
+            .nav-links a,
+            .nav-links button {
+                padding: 5px 10px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+
+            .lang-toggle {
+                padding: 5px 8px;
+                font-size: 11px;
+                font-weight: 600;
+                border: 1.5px solid var(--border);
+            }
+
+            .theme-toggle {
+                padding: 5px 8px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -684,6 +797,7 @@
             <img src="LOGO.png" alt="IntelliChain Labs Logo"> IntelliChain Labs
         </a>
         <div class="nav-links">
+            <button class="lang-toggle" id="langToggle" title="Toggle language">EN</button>
             <a href="index.html">Back to Home</a>
             <button class="theme-toggle" id="themeToggle">🌙</button>
         </div>
@@ -1049,6 +1163,47 @@
                 errorMessage.classList.remove('show');
             });
         });
+
+        // Language detection and management
+        function detectBrowserLanguage() {
+            return navigator.language.startsWith('id') ? 'id' : 'en';
+        }
+
+        function initLanguage() {
+            const savedLang = localStorage.getItem('language');
+            const lang = savedLang || detectBrowserLanguage();
+            setLanguage(lang);
+            updateLanguageButton(lang);
+        }
+
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            document.documentElement.lang = lang;
+        }
+
+        function updateLanguageButton(lang) {
+            const langToggle = document.getElementById('langToggle');
+            if (langToggle) {
+                langToggle.textContent = lang === 'en' ? 'EN' : 'ID';
+            }
+        }
+
+        // Language toggle
+        document.getElementById('langToggle')?.addEventListener('click', function() {
+            const currentLang = localStorage.getItem('language') || 'en';
+            const newLang = currentLang === 'en' ? 'id' : 'en';
+            setLanguage(newLang);
+            updateLanguageButton(newLang);
+        });
+
+        // Initialize language on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                initLanguage();
+            });
+        } else {
+            initLanguage();
+        }
     </script>
 </body>
 </html>
